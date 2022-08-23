@@ -1,0 +1,546 @@
+# Built-In Elixir Modules
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Overview
+
+Elixir provides a great deal of functionality in built-in modules.
+
+In general, each data type or common behavior has a built-in module containing related functions for dealing with that data type.
+
+While it is unnecessary to memorize every function in every module, it's essential to be familiar with the built-in modules to know when to reach for them.
+
+## The Kernel Module
+
+The [Kernel](https://hexdocs.pm/elixir/Kernel.html#functions) is the core of everything Elixir.
+
+Even the operators that you've been using are simply an alternative syntax to using functions in
+the Kernel.
+
+```elixir
+Kernel.+(3, 3)
+```
+
+`Kernel` contains many functions for determining a values type such as `is_atom/1`, `is_binary/1`, `is_map/1`, and `is_integer/1`.
+
+```elixir
+true = Kernel.is_map(%{})
+true = Kernel.is_atom(:an_atom)
+true = Kernel.is_binary("")
+true = Kernel.is_integer(1)
+```
+
+We can use `Kernel` functions without using the `Kernel` namespace.
+
+```elixir
+is_map(%{})
+```
+
+The `Kernel` is reasonably large. Remember, our goal is not to memorize every function but to develop familiarity with repeated practice.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Your Turn
+
+In the Elixir cell below, use the correct function from `Kernel` to determine if each value below matches its type.
+The first `is_a_atom` value is filled in to demonstrate the goal.
+
+Replace `nil` with your answers.
+
+```elixir
+atom = :example
+map = %{}
+string = ""
+integer = 1
+float = 1.0
+boolean = true
+list = []
+tuple = {}
+
+is_a_atom = is_atom(atom)
+is_a_map = nil
+is_a_string = nil
+is_a_integer = nil
+is_a_float = nil
+is_a_boolean = nil
+is_a_list = nil
+is_a_tuple = nil
+
+Utils.feedback(:is_type, [
+  is_a_map,
+  is_a_string,
+  is_a_integer,
+  is_a_float,
+  is_a_boolean,
+  is_a_list,
+  is_a_tuple
+])
+```
+
+## The Integer Module
+
+The [Integer](https://hexdocs.pm/elixir/Integer.html#functions) module contains functionality related to Integers.
+
+Here are a few functions to get you started.
+
+* `parse/2` parses integers from strings.
+* `digits/2` splits an integer into a list of digits.
+* `gcd/2` find the greatest common divisor between two integers.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Your Turn
+
+Use the `Integer.parse/2` function to convert `"2"` to an integer. Notice that the return value should
+be `{2, ""}` Because `Integer.parse/2` returns a tuple with the parsed integer and the remaining string.
+
+Replace `nil` with your answer.
+
+```elixir
+parsed = nil
+
+Utils.feedback(:integer_parse, parsed)
+```
+
+Use the `Integer.digits/2` function to split `123456789` into a list of integers.
+
+Replace `nil` with your answer.
+
+```elixir
+digits = nil
+
+Utils.feedback(:integer_digits, digits)
+```
+
+Use the `Integer.gcd/2` function to determine the greatest common denominator of
+`10` and `15`. The greatest common divisor (GCD) is the largest
+positive integer that divides both 10 and 15 evenly.
+
+Replace `nil` with your answer.
+
+```elixir
+gcd = nil
+
+Utils.feedback(:gcd, gcd)
+```
+
+## The String Module
+
+The [String](https://hexdocs.pm/elixir/String.html#functions) module contains functionality related to strings.
+
+Here are a few common functions to get you started.
+
+* `at/2` gets the value at the index of a string.
+* `contains?/2` check if a string contains a value.
+* `capitalize/2` capitalize the first letter in a string and leaves the rest lowercase.
+* `split/3` split the string into a list of words.
+* `trim/1` remove whitespace from a string.
+* `upcase/1` convert a string to ALL CAPS.
+
+### Indexes
+
+You can imagine a string like a list of characters. However, be warned this is only a mental model,
+strings are not actually implemented as lists.
+
+```mermaid
+flowchart TB
+  subgraph Characters
+    S
+    T
+    R
+    I
+    N
+    G
+  end
+  subgraph Indexes
+    direction TB
+    S --- 0
+    T --- 1
+    R --- 2
+    I --- 3
+    N --- 4
+    G --- 5
+  end
+```
+
+Notice that the index starts with 0, not 1, just like lists.
+
+So the character at index 1 in `"hello"` would be `"e"`.
+
+```mermaid
+flowchart TB
+  subgraph Characters
+    H
+    E
+    L1[L]
+    L2[L]
+    O
+  end
+  subgraph Indexes
+    direction TB
+    H --- 0
+    E --- 1
+    L1 --- 2
+    L2 --- 3
+    O --- 4
+  end
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Your Turn
+
+Use the `String.at/2` function to get the character at index `2` of `"hello"`.
+The result should be the character `l`.
+
+Replace `nil` with your answer.
+
+```elixir
+answer = nil
+
+Utils.feedback(:string_at, answer)
+```
+
+Use the `String.contains?/2` function to determine if `"Hello"` contains `"lo"`. Replace `nil` with your answer.
+
+```elixir
+answer = nil
+
+Utils.feedback(:string_contains, answer)
+```
+
+Use `String.capitalize/2` to capitalize `"hello"`. Replace `nil` with your answer.
+
+```elixir
+answer = nil
+
+Utils.feedback(:string_capitalize, answer)
+```
+
+Use `String.split/3` to split the following comma-separated list of strings into a list of words.
+Replace `nil` with your answer.
+
+```elixir
+string = "have,a,great,day"
+
+words = nil
+
+Utils.feedback(:string_split, words)
+```
+
+Use `String.trim/1` to remove whitespace from the following string.
+Replace `nil` with your answer.
+
+```elixir
+string = "  hello!  "
+
+trimmed_string = nil
+
+Utils.feedback(:string_trim, trimmed_string)
+```
+
+Use `String.upcase/1` to convert the following string to all caps.
+Replace `nil` with your answer.
+
+```elixir
+string = "hello"
+
+uppercase_string = nil
+
+Utils.feedback(:string_upcase, uppercase_string)
+```
+
+## The List Module
+
+The [List](https://hexdocs.pm/elixir/List.html) module contains functionality related to lists.
+
+Here are a few common functions to get you started.
+
+* `delete_at/2` remove an element at an index in a list.
+* `first/2` retrieve the first element in a list similar to `hd/1` or pattern matching on the head and tail of a list.
+* `flatten/2` flatten nested lists within a list.
+* `insert_at/3` insert an element at a specified index within a list.
+* `last/2` retrieve the last element in a list.
+* `update_at/3` update an element at a specified index within a list.
+* `zip/1` combine elements from multiple lists into a single list of tuples.
+
+The `delete_at/2`, `insert_at/3` and `update_at/3` functions do not mutate the original list. Instead, they create a new copy of the original list with the operation applied to it.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Your Turn
+
+Use `delete_at/2` to remove `2` from this list.
+
+```elixir
+list = [1, 2, 3]
+```
+
+`first/2` retrieves the first element in a list. We can also use `hd/1`, `Enum.at/2`, or pattern matching.
+
+```elixir
+head = List.first([1, 2, 3])
+```
+
+```elixir
+[head | _tail] = [1, 2, 3]
+head
+```
+
+```elixir
+hd([1, 2, 3])
+```
+
+```elixir
+head = Enum.at([1, 2, 3], 0)
+```
+
+Try pattern matching, `List.first/2`, `Enum.at/2`, and `hd/1` to retrieve the first element of
+the list below.
+
+```elixir
+list = [1, 2, 3]
+```
+
+Use `List.flatten/1` to flatten the following list into [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+```elixir
+list = [1, 2, [3, 4, 5], 6, [7, [8, [9]]]]
+```
+
+Use `List.insert_at/3` to insert `2` into the following list to make `[1, 2, 3]`.
+
+```elixir
+List.insert_at([1, 3], 1, 2)
+```
+
+Use `List.last/2` to retrieve the last element `10000` in the list below.
+
+```elixir
+list = Enum.to_list(1..10000)
+```
+
+Use `List.update_at/3` to replace `4` with `2` in the following list to make `[1, 2, 3]`.
+
+```elixir
+list = [1, 4, 3]
+```
+
+Use `List.zip/1` to combine these two lists to make `[{"a", 1}, {"b", 2}, {"c", 3}]`.
+
+```elixir
+lista = ["a", "b", "c"]
+listb = [1, 2, 3]
+```
+
+## The Map Module
+
+The [Map](https://hexdocs.pm/elixir/Map.html#functions) module contains functionality related to maps.
+
+Here are a few common functions to get you started.
+
+* `get/3` retrieve values in a map.
+* `put/3` put a value into a map.
+* `keys/1` list the keys in a map.
+* `delete/2` remove a key and value from a map.
+* `merge/2` merge two maps together.
+* `values/1` list the values in a map.
+
+Keep in mind operations do not mutate a value.
+
+For example, if we use `Map.put/3` to put a new value in a map, the original variable is not
+changed. Functions return a new value rather than modifying the original one.
+
+```elixir
+original_map = %{}
+
+new_map = Map.put(original_map, :key, "value")
+```
+
+So the `original_map` is still an empty map `%{}`.
+
+```elixir
+original_map
+```
+
+And the `new_map` has been bound to the result of `Map.put/3`.
+
+```elixir
+new_map
+```
+
+### Your Turn
+
+<!-- livebook:{"break_markdown":true} -->
+
+Use `Map.get/3` to retrieve the value for the `:hello` key in the following map.
+Replace `nil` with your answer.
+
+```elixir
+map = %{hello: "world"}
+
+retrieved_value = nil
+
+Utils.feedback(:map_get, retrieved_value)
+```
+
+Use `Map.put/3` to add the key `:two` with the value `2` to the following map. Replace `nil` with your answer.
+
+```elixir
+map = %{one: 1}
+
+new_map = nil
+
+Utils.feedback(:map_put, new_map)
+```
+
+Use `Map.keys/1` to retrieve the keys for the following map. Replace `nil` with your answer.
+
+```elixir
+map = %{key1: 1, key2: 2, key3: 3}
+
+keys = nil
+
+Utils.feedback(:map_keys, keys)
+```
+
+Use `Map.delete/2` to remove `:key1` from the following map.
+
+```elixir
+map = %{key1: 1, key2: 2, key3: 3}
+
+new_map = nil
+
+Utils.feedback(:map_delete, new_map)
+```
+
+Use `Map.merge/2` to combine `%{one: 1}` and `%{two: 2}`. Replace `nil` with your answer.
+
+```elixir
+merged_map = nil
+
+Utils.feedback(:merged_map, merged_map)
+```
+
+Use `Map.values/1` to retrieve the values in the following map. Replace `nil` with your answer.
+
+```elixir
+map = %{key1: 1, key2: 2, key3: 3}
+
+values = nil
+
+Utils.feedback(:map_values, values)
+```
+
+## The Keyword Module
+
+The [Keyword](https://hexdocs.pm/elixir/Keyword.html#functions) module contains functionality related to keyword lists.
+
+Here are a few common functions to get you started.
+
+* `get/3` retrieve values in a keyword list.
+* `keys/1` list the keys in a keyword list.
+* `keyword?/1` check if some data is a keyword list.
+
+We often use keyword lists to provide optional arguments to a function.
+For example, `IO.inspect/2` has [many optional arguments](https://hexdocs.pm/elixir/Inspect.Opts.html)
+Including `:label`.
+
+```elixir
+IO.inspect("world", label: "hello")
+```
+
+Under the hood, these functions may use `Keyword.get/3` to retrieve optional arguments or provide
+default arguments.
+
+```elixir
+defmodule MyIO do
+  def inspect(value, opts \\ []) do
+    label = Keyword.get(opts, :label, "default label")
+    "#{label}: #{value}"
+  end
+end
+```
+
+```elixir
+MyIO.inspect("world")
+```
+
+```elixir
+MyIO.inspect("world", label: "hello")
+```
+
+### Your Turn
+
+<!-- livebook:{"break_markdown":true} -->
+
+Use `Keyword.get/3` to access the value for the `:color` key in the following keyword list.
+Replace `nil`  with your answer.
+
+```elixir
+options = [color: "red"]
+
+color = nil
+
+Utils.feedback(:keyword_get, color)
+```
+
+Use the `Keyword.keys/1` function to list all of the keys in the following keyword list.
+Replace `nil` with your answer.
+
+```elixir
+options = [one: 1, two: 2, three: 3]
+
+keys = nil
+
+Utils.feedback(:keyword_keys, keys)
+```
+
+Use the `Keyword.keyword?/1` function to determine if the following is a keyword list.
+Replace `nil` with your answer.
+
+```elixir
+keyword_list = [key: "value"]
+
+is_keyword_list = nil
+
+Utils.feedback(:keyword_keyword?, is_keyword_list)
+```
+
+## Further Reading
+
+There are more built-in modules and functions beyond the scope of this introductory reading. The Elixir documentation further examples and information on the built-in modules.
+
+* [Kernel](https://hexdocs.pm/elixir/Kernel.html)
+* [Integer](https://hexdocs.pm/elixir/Integer.html)
+* [String](https://hexdocs.pm/elixir/String.html)
+* [List](https://hexdocs.pm/elixir/List.html)
+* [Map](https://hexdocs.pm/elixir/Map.html)
+* [Keyword](https://hexdocs.pm/elixir/Keyword.html)
+* [Tuple](https://hexdocs.pm/elixir/Tuple.html)
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish built-in modules section"
+```

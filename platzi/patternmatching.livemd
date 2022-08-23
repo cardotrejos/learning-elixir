@@ -1,0 +1,281 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Pattern Matching
+
+## Equivalence operator
+
+```elixir
+x = 1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+1 = x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+2 = x
+```
+
+```elixir
+1 = unknown
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+warning: variable "unknown" does not exist and is being expanded to "unknown()", please use parentheses to remove the ambiguity or change the variable name
+  #cell:1
+
+```
+
+## Decomposing using pattern matching
+
+```elixir
+{a, b, c} = {:hello, "world", 42}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:hello, "world", 42}
+```
+
+```elixir
+a
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:hello
+```
+
+```elixir
+b
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"world"
+```
+
+```elixir
+{a, b, c} = {:hello, "world"}
+```
+
+```elixir
+{a, b, c} = [1, 2, 3]
+```
+
+```elixir
+{:ok, result} = {:ok, 13}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:ok, 13}
+```
+
+```elixir
+result
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+13
+```
+
+```elixir
+{:ok, result} = {:error, :oops}
+```
+
+```elixir
+[a, b, c] = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+[head | tail] = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+head
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+tail
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[2, 3]
+```
+
+```elixir
+[head | tail] = []
+```
+
+```elixir
+list = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+[0 | list]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[0, 1, 2, 3]
+```
+
+## Pin operator ^
+
+```elixir
+x = 1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+x = 2
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+2
+```
+
+```elixir
+x = 1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+^x = 2
+```
+
+```elixir
+1 = 2
+```
+
+```elixir
+[^x, 2, 3] = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+{y, ^x} = {2, 1}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{2, 1}
+```
+
+```elixir
+{y, ^x} = {2, 2}
+```
+
+```elixir
+{x, x} = {1, 1}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{1, 1}
+```
+
+```elixir
+{x, x} = {1, 2}
+```
+
+```elixir
+[head | _] = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+head
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+_
+```

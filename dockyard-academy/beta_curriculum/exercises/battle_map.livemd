@@ -1,0 +1,145 @@
+# Battle Map
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Overview
+
+You're developing a 2D tactical combat game.
+
+Characters in your game fight on a grid of potentially infinite size.
+![](images/battle_map.png)
+
+## Character Attack
+
+You're going to create a `Character.can_attack?/3` function
+that expects the following:
+
+1. A struct
+2. The player's coordinate `{x, y}`
+3. An enemy's coordinate `{x, y}`
+
+It should then return a boolean.
+
+### Wizard
+
+A <b style="color: purple;">Wizard</b> can attack in straight or diagonal lines of any length.
+
+![](images/wizard_grid.png)
+
+We've created a `Wizard` struct below. It does not need to store any information in the struct.
+
+```elixir
+defmodule Wizard do
+  defstruct []
+end
+```
+
+A <b style="color: red;">Barbarian</b> can attack in 2 square radius.
+
+![](images/barbarian_grid.png)
+
+We've created a `Barbarian` struct below. It does not need to store any information in the struct.
+
+```elixir
+defmodule Barbarian do
+  defstruct []
+end
+```
+
+You should be able to check if a character can attack a coordinate `{x, y}` given their
+starting location in `{x, y}`.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+Character.can_attack?(%Barbarian{}, {4, 4}, {6, 6})
+true
+```
+
+![](images/barbarian_attack.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+Character.can_attack?(%Wizard{}, {4, 4}, {6, 6})
+true
+```
+
+![](images/wizard_attack.png)
+
+Enter your solution between the comments below. You may consider making `Character` a protocol or a module.
+
+```elixir
+# Enter your solution below
+defprotocol Character do
+  def can_attack?(character, origin, target)
+end
+
+defimpl Character, for: Wizard do
+  def can_attack?(_character, {init_x, init_y}, {x, y}) do
+    x_diff = init_x - x
+    y_diff = init_y - y
+
+    init_x == x || init_y == y || abs(x_diff) == abs(y_diff)
+  end
+end
+
+defimpl Character, for: Barbarian do
+  def can_attack?(_character, {init_x, init_y}, {x, y}) do
+    x_diff = init_x - x
+    y_diff = init_y - y
+
+    abs(x_diff) <= 2 && abs(y_diff) <= 2
+  end
+end
+
+# Enter your solution above
+Utils.feedback(:battle_map, [Character, Barbarian, Wizard])
+```
+
+## Custom Character (BONUS)
+
+Create your own customer character with an attack pattern than you decide on. It should not
+match the existing characters.
+
+For example, you might create an `Archer` who can only attack in a 3 radius square.
+
+![](images/archer_attack.png)
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+Character.can_attack?(%Archer{}, {4, 4}, {7, 7})
+true
+```
+
+Modify the existing solution above to add your custom character.
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish battle map exercise"
+```

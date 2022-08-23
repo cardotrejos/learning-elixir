@@ -1,0 +1,257 @@
+# Structs
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Setup
+
+Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
+
+## Structs
+
+We've learned how to abstract behavior in our programs, but what about data?
+
+It's often useful to be able to create a custom data structure. That's what structs are for.
+**Struct** is simply a short word for structure. They are an extension on top of maps that enforce
+constraints on your data.
+
+### Defining A Struct
+
+Let's say you're building a family tree but this time, you want to make sure that every
+`Person` has a name. You could define a struct with the `:name` key.
+
+```elixir
+defmodule Person do
+  defstruct [:name]
+end
+```
+
+You'll notice that structs are defined using modules! the only new concept here is the `defstruct` construct.
+
+`defstruct` is an Elixir keyword that means "this module is a struct". You then define a list of keys for the struct
+that will always exist on the struct.
+
+### Using A Struct
+
+A struct is essentially a custom data structure that we've defined. You create instances
+using `%STRUCT{}` syntax that looks very similar to how you create a map.
+
+```elixir
+%Person{}
+```
+
+You'll notice that the struct has a name key, but no value since we didn't provide anything.
+
+Here's how you can pass in a name.
+
+```elixir
+%Person{name: "Peter Parker"}
+```
+
+So, why not just use a map? We could easily define a similar map and it looks exactly the same.
+
+```elixir
+%{name: "Peter Parker"}
+```
+
+There are a ton of reasons to use a struct vs a map. It's not possible in this section to cover
+all of them.
+
+One main reason, is to validate our data and ensure keys and values exist with the expected data.
+
+For example, using a struct guarantees that certain keys exist, even if the value is `nil`. So it's
+always safe to use `.` syntax. Notice how `map.name` results in an error, but `struct.name` simply 
+returns `nil`.
+
+```elixir
+map = %{}
+map.name
+```
+
+```elixir
+struct = %Person{}
+struct.name
+```
+
+We also guarantee that other keys don't exist. For example, if we don't define `age` on our person struct,
+it can't be set. This helps ensure we use the data structure as intended.
+
+```elixir
+defmodule Person do
+  defstruct [:name]
+end
+
+%Person{age: 20}
+```
+
+We also get some very handy features such as default values using a keyword list.
+
+```elixir
+defmodule Person do
+  defstruct name: "Peter Parker"
+end
+
+%Person{}
+```
+
+It's common to validate data in a struct. For example, you can use the `@enforce_keys`
+module attribute to enforce that certain keys are set, other wise the struct will throw an error
+`the following keys must also be given when building struct Person: [:name]`.
+
+```elixir
+defmodule Person do
+  @enforce_keys [:name]
+  defstruct [:name]
+end
+
+%Person{}
+```
+
+Right now, we can create a Person struct who has a name of 25. That doesn't really make much sense.
+
+```elixir
+defmodule Person do
+  defstruct [:name]
+end
+
+%Person{name: 25}
+```
+
+So you can imagine it's useful to validate the data in a struct upon creation.
+It's a common pattern to create a `new` function in the struct that handles creation and validation.
+
+Here's how we could use the `is_binary/1` guard from earlier to ensure that name is only ever a string.
+You'll notice we return a tuple with `:ok` and the struct. This is part of a common pattern to
+communicate with code that the `Person` was created successfully.
+
+Now, our code will give us an error if we misuse the `Person` struct! Excellent.
+
+```elixir
+defmodule Person do
+  defstruct [:name]
+
+  def new(name) when is_binary(name) do
+    {:ok, %Person{name: name}}
+  end
+end
+
+Person.new(25)
+```
+
+### Module Functions
+
+A module that defines a struct can contain functions just like a normal module.
+
+```elixir
+defmodule Person do
+  defstruct [:name]
+
+  def new(name) when is_binary(name) do
+    {:ok, %Person{name: name}}
+  end
+
+  def greet(person) do
+    "Hello, #{person.name}."
+  end
+end
+
+{:ok, person} = Person.new("Peter")
+
+Person.greet(person)
+```
+
+### Your Turn
+
+* Define a new struct `Hero`.
+
+* A `Hero` will have a `:name`, `:catchphrase`, and `:secret_identity`
+
+* Create a `reveal/1` function which takes in an instance of a hero and returns
+
+  `"I am secretly #{hero.secret_identity}"`
+
+* Create an `introduce/2` function which takes in an instance of a hero and a greeting
+  and returns
+
+  `"#{greeting} I am #{hero.name}"`
+
+```elixir
+
+```
+
+### Your Turn
+
+In the Elixir below, create an instance of a Hero with the following data and bind it
+to the variable `spider_man`.
+
+```mermaid
+classDiagram
+  class Hero {
+    name: Spider Man
+    catchphrase: Friendly neighborhood Spiderman!
+    secret_identity: Peter Parker
+  }
+```
+
+```elixir
+
+```
+
+Use the `Hero.introduce/2` function on `spider_man`.
+
+```elixir
+
+```
+
+Use the `Hero.reveal/1` function on `spider_man`.
+
+```elixir
+
+```
+
+### Updating A Struct
+
+Structs are an extension of maps under the hood, so you can use the same map update syntax.
+
+```elixir
+defmodule MyUpdatableStruct do
+  defstruct [:key]
+end
+```
+
+```elixir
+initial = %MyUpdatableStruct{key: "value"}
+updated = %{initial | key: "new value"}
+```
+
+## Further Reading
+
+For more on structs, you can read
+
+* [The Elixir Documentation](https://elixir-lang.org/getting-started/structs.html)
+* [Elixir School](https://elixirschool.com/en/lessons/basics/modules#structs-2)
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish structs section"
+```

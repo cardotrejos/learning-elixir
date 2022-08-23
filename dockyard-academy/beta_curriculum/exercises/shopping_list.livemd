@@ -1,0 +1,126 @@
+# Shopping List
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Setup
+
+Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
+
+## Text Shopping List
+
+You are creating a shopping list app. Users have the ability to add items into their `shopping_cart`.
+Each item is represented as a string.
+
+In the Elixir cells below, use `++` and `--` to add the items show.
+
+* Add `"grapes"`, `"walnuts"`, and `"apples"` to the `shopping_cart`
+* Add `"blueberries"`, `"chocolate"`, and `"pizza"` to the `shopping_cart`.
+* Remove `"grapes"` and `"walnuts"` from the `shopping_cart`
+* Add three `"banana"`s to the `shopping_cart`
+
+<!-- livebook:{"attrs":{"assertions":"list = [] ++ [\"grapes\", \"walnuts\", \"apples\"]\nlist = list ++ [\"blueberries\", \"chocolate\", \"pizza\"]\nlist = list -- [\"grapes\", \"walnuts\"]\nlist = list ++ [\"banana\", \"banana\", \"banana\"]\n\nassert is_list(shopping_cart), \"Ensure shopping_list is still a list.\"\n\nassert Enum.sort(list) == Enum.sort(shopping_cart),\n  \"Ensure your shopping list has all of the expected items\"\n\nassert shopping_cart == list, \"Ensure you add and remove items in the expected order\"","code":"shopping_cart = []","solution":"shopping_cart = []\n\nshopping_cart = shopping_cart ++ ~w[grapes walnuts apples]\nshopping_cart = shopping_cart ++ ~w[blueberries chocolate pizza]\nshopping_cart = shopping_cart -- ~w[grapes walnuts]\nshopping_cart = shopping_cart ++ ~w[banana banana banana]"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "" do
+    shopping_cart = []
+    list = [] ++ ["grapes", "walnuts", "apples"]
+    list = list ++ ["blueberries", "chocolate", "pizza"]
+    list = list -- ["grapes", "walnuts"]
+    list = list ++ ["banana", "banana", "banana"]
+
+    assert is_list(shopping_cart), "Ensure shopping_list is still a list."
+
+    assert Enum.sort(list) == Enum.sort(shopping_cart),
+           "Ensure your shopping list has all of the expected items"
+
+    assert shopping_cart == list, "Ensure you add and remove items in the expected order"
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+shopping_cart = []
+```
+
+## Text Shopping List With Quantities
+
+Users of your shopping list app have asked that they be able to include the quantity of each item
+to make adding many items easier.
+
+In the Elixir cell below, use a keyword list in the format `[item: quantity]` to add or remove
+items from the `shopping_cart`
+
+* Add `1` `milk` and `12` `eggs`
+* Add `2` `bars_of_butter` and `10` `candies`
+* Remove `2` `bars_of_butter`
+* Remove `5` `candies` (Notice `5` and not `10`!).
+  <details>
+  <summary>Hint</summary>
+  Likely you will need to remove 10 candies, and then add 5 candies.
+  </details>
+
+<!-- livebook:{"attrs":{"assertions":"list = [] ++ [milk: 1, eggs: 12]\nlist = list ++ [bars_of_butter: 2, candies: 10]\nlist = list -- [bars_of_butter: 2]\nlist = list -- [candies: 10]\nlist = list ++ [candies: 5]\n\nassert is_list(shopping_cart), \"Ensure shopping_list is still a list.\"\n\nassert Enum.sort(list) == Enum.sort(shopping_cart),\n  \"Ensure your shopping list has all of the expected items\"\n\nassert shopping_cart == list, \"Ensure you add and remove items in the expected order\"","code":"shopping_cart = []","solution":"shopping_cart = []\n\nshopping_cart = shopping_cart ++ [milk: 1, eggs: 12]\nshopping_cart = shopping_cart ++ [bars_of_butter: 2, candies: 10]\nshopping_cart = shopping_cart -- [bars_of_butter: 2]\nshopping_cart = shopping_cart -- [candies: 10]\nshopping_cart = shopping_cart ++ [candies: 5]"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "" do
+    shopping_cart = []
+    list = [] ++ [milk: 1, eggs: 12]
+    list = list ++ [bars_of_butter: 2, candies: 10]
+    list = list -- [bars_of_butter: 2]
+    list = list -- [candies: 10]
+    list = list ++ [candies: 5]
+
+    assert is_list(shopping_cart), "Ensure shopping_list is still a list."
+
+    assert Enum.sort(list) == Enum.sort(shopping_cart),
+           "Ensure your shopping list has all of the expected items"
+
+    assert shopping_cart == list, "Ensure you add and remove items in the expected order"
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+shopping_cart = []
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish shopping list exercise"
+```

@@ -1,0 +1,153 @@
+# case, cond, if, else, unless
+
+## case
+
+```elixir
+case {1, 2, 3} do
+  {4, 5, 6} ->
+    "this clause wont match"
+
+  {1, x, 3} ->
+    "this clause will match and bind x to 2 in this clause"
+
+  _ ->
+    "This clause would watch any value"
+end
+```
+
+```elixir
+x = 1
+
+case 10 do
+  ^x -> "won't match"
+  _ -> "will match"
+end
+```
+
+```elixir
+case {1, 2, 3} do
+  {1, x, 3} when x > 0 ->
+    "will match"
+
+  _ ->
+    "would match, if guard condition were not satisfied"
+end
+```
+
+```elixir
+hd(1)
+```
+
+```elixir
+case 1 do
+  x when hd(x) -> "won't match"
+  x -> "got #{x}"
+end
+```
+
+```elixir
+case :ok do
+  :error -> "wont match"
+end
+```
+
+## cond
+
+```elixir
+cond do
+  2 + 2 == 5 ->
+    "this will not be true"
+
+  2 * 2 == 3 ->
+    "nor this"
+
+  1 + 1 == 2 ->
+    "but this will"
+end
+```
+
+```elixir
+# Always put at the end of cond a true case, to avoid exceptions
+cond do
+  2 + 2 == 5 ->
+    "this will not be true"
+
+  2 * 2 == 3 ->
+    "nor this"
+
+  true ->
+    "but this will"
+end
+```
+
+```elixir
+cond do
+  hd([1, 2, 3]) ->
+    "1 is considered as true"
+end
+```
+
+## if and unless
+
+```elixir
+if true do
+  "this works!"
+end
+```
+
+```elixir
+unless true do
+  "this will never be seen"
+end
+```
+
+```elixir
+if nil do
+  "this won't be seen"
+else
+  "this will"
+end
+```
+
+```elixir
+unless true do
+  "this will never be seen"
+else
+  "this will"
+end
+```
+
+```elixir
+# equal to the unless above
+if true do
+  "this will"
+else
+  "this will never be seen"
+end
+```
+
+```elixir
+x = 1
+```
+
+```elixir
+if true do
+  x = x + 1
+end
+```
+
+```elixir
+x
+```
+
+```elixir
+# assign variable based on a conditional
+x =
+  if true do
+    x = x + 1
+  end
+```
+
+```elixir
+x
+```

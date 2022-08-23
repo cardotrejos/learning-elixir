@@ -1,0 +1,73 @@
+# Recursion
+
+## Cicles with recursion
+
+```elixir
+defmodule Recursion do
+  def print_multiple_times(msg, n) when n > 0 do
+    IO.puts(msg)
+    print_multiple_times(msg, n - 1)
+  end
+
+  def print_multiple_times(_msg, 0) do
+    :ok
+  end
+end
+```
+
+```elixir
+defmodule Recursion do
+  def print_multiple_times(msg, n) when n > 0 do
+    IO.puts(msg)
+    print_multiple_times(msg, n - 1)
+  end
+
+  def print_multiple_times(_msg, 0), do: :ok
+end
+```
+
+```elixir
+Recursion.print_multiple_times("Hello", 4)
+```
+
+## Algo `reduce`, `map`
+
+```elixir
+defmodule Math do
+  def sum_list([head | tail], accumulator) do
+    sum_list(tail, head + accumulator)
+  end
+
+  def sum_list([], accumulator) do
+    accumulator
+  end
+end
+```
+
+```elixir
+Math.sum_list([1, 2, 3], 0)
+```
+
+```elixir
+defmodule Math do
+  def double_each([head | tail]) do
+    [head * 2 | double_each(tail)]
+  end
+
+  def double_each([]) do
+    []
+  end
+end
+```
+
+```elixir
+Math.double_each([1, 2, 3])
+```
+
+```elixir
+Enum.reduce([1, 2, 3], 0, fn x, acc -> x + acc end)
+```
+
+```elixir
+Enum.map([1, 2, 3], fn x -> x * 2 end)
+```

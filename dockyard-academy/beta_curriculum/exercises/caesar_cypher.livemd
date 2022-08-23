@@ -1,0 +1,95 @@
+# Caesar Cypher
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Caesar Cypher
+
+A cypher alters characters in order to make secret messages.
+The Caesar cypher is a substitution cypher named after the Roman emperor Julius Caesar.
+
+Typically caesar cyphers use a `key` to shift letters. For example,
+a caesar cypher with a key of `1` would shift each letter by one.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+CaesarCypher.encode("abcdefghijklmnopqrstuvwyxz", 1)
+"bcdefghijklmnopqrstuvwyxza"
+```
+
+A key of `2` would shift each letter by two.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+CaesarCypher.encode("abcdefghijklmnopqrstuvwyxz", 2)
+"cdefghijklmnopqrstuvwyxzab"
+```
+
+Ensure you handle keys between `1` and `25`.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+CaesarCypher.encode("abcdefghijklmnopqrstuvwyxz", 25)
+"zabcdefghijklmnopqrstuvwyx"
+```
+
+CaesarCypher should also be able to decode messages given the key.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+CaesarCypher.decode("cdefghijklmnopqrstuvwyxzab", 2)
+"abcdefghijklmnopqrstuvwyxz"
+```
+
+The cypher should only handle lowercase letters and ignore non-alphabetical characters.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+CaesarCypher.encode("et tu, brute?", 2)
+"gv vw, dtwvg?"
+```
+
+Enter your solution below.
+
+```elixir
+defmodule CaesarCypher do
+  def encode(string, key) do
+  end
+
+  def decode(string, key) do
+  end
+end
+
+Utils.feedback(:caesar_cypher, CaesarCypher)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish caesar cypher exercise"
+```

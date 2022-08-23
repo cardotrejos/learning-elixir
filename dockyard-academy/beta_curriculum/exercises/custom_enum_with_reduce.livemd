@@ -1,0 +1,115 @@
+# Custom Enum With Reduce
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Custom Enum With Reduce
+
+Reduce is an incredibly powerful tool you can leverage in a wide variety of circumstances.
+
+If you'd like to learn more about reduce, there's an [excellent video](https://github.com/paulfioravanti/presentations/tree/master/everything_is_reduce) by Paul Fioravanti.
+
+```elixir
+Kino.YouTube.new("https://www.youtube.com/watch?v=OQrfedclHfk")
+```
+
+We're going to use `Reduce` to re-implement several of the `Enum` module's functions to show
+how it can be leveraged for many problems.
+
+Implement the following `Enum` functions in this `CustomEnum` function. Each should use `Enum.reduce/3`
+to accomplish the same functionality as the `Enum` module does.
+
+* `map/2`
+* `each/2`
+* `filter/2`
+* `sum/1`
+
+<!-- livebook:{"attrs":{"assertions":"list = Enum.to_list(1..10)\n\nassert CustomEnum.map(list, & &1), \"Implement the `map/2` function.\"\nassert is_list(CustomEnum.map(list, & &1)), \"`map/2` should return a list.\"\n\nassert CustomEnum.map([1, 2, 3], &(&1 * 2)) == [2, 4, 6]\n\nassert CustomEnum.each(list, & &1), \"Implement the `each/2` function.\"\nassert CustomEnum.each(list, & &1) == :ok, \"`each/2` should return :ok.\"\n\nassert CustomEnum.filter(list, & &1), \"Implement the `filter/2` function.\"\nassert is_list(CustomEnum.filter(list, & &1)), \"`each/2` should return a list.\"\n\nassert CustomEnum.filter(list, &(&1 < 5)) == Enum.filter(list, &(&1 < 5))\n\nassert CustomEnum.sum(list), \"Implement the `sum/1` function.\"\nassert is_integer(CustomEnum.sum(list)), \"`sum/1` should return an integer.\"\n\nassert CustomEnum.sum(list) == Enum.sum(list)","code":"defmodule CustomEnum do\r\n  def map(collection, function) do\r\n  end\r\n\r\n  def each(collection, function) do\r\n  end\r\n\r\n  def filter(collection, function) do\r\n  end\r\n\r\n  def sum(collection) do\r\n  end\r\nend","solution":"defmodule CustomEnum do\n  def map(collection, function) do\n    Enum.reduce(collection, [], fn each, acc ->\n      [function.(each) | acc]\n    end)\n    |> Enum.reverse()\n  end\n\n  def each(collection, function) do\n    Enum.reduce(collection, fn each, _acc ->\n      function.(each)\n      :ok\n    end)\n  end\n\n  def filter(collection, function) do\n    Enum.reduce(collection, [], fn each, acc ->\n      if function.(each) do\n        [each | acc]\n      else\n        acc\n      end\n    end)\n    |> Enum.reverse()\n  end\n\n  def sum(collection) do\n    Enum.reduce(collection, 0, fn each, acc -> acc + each end)\n  end\nend"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "" do
+    defmodule CustomEnum do
+      def map(collection, function) do
+      end
+
+      def each(collection, function) do
+      end
+
+      def filter(collection, function) do
+      end
+
+      def sum(collection) do
+      end
+    end
+
+    list = Enum.to_list(1..10)
+
+    assert CustomEnum.map(list, & &1), "Implement the `map/2` function."
+    assert is_list(CustomEnum.map(list, & &1)), "`map/2` should return a list."
+
+    assert CustomEnum.map([1, 2, 3], &(&1 * 2)) == [2, 4, 6]
+
+    assert CustomEnum.each(list, & &1), "Implement the `each/2` function."
+    assert CustomEnum.each(list, & &1) == :ok, "`each/2` should return :ok."
+
+    assert CustomEnum.filter(list, & &1), "Implement the `filter/2` function."
+    assert is_list(CustomEnum.filter(list, & &1)), "`each/2` should return a list."
+
+    assert CustomEnum.filter(list, &(&1 < 5)) == Enum.filter(list, &(&1 < 5))
+
+    assert CustomEnum.sum(list), "Implement the `sum/1` function."
+    assert is_integer(CustomEnum.sum(list)), "`sum/1` should return an integer."
+
+    assert CustomEnum.sum(list) == Enum.sum(list)
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+defmodule CustomEnum do
+  def map(collection, function) do
+  end
+
+  def each(collection, function) do
+  end
+
+  def filter(collection, function) do
+  end
+
+  def sum(collection) do
+  end
+end
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish custom enum with reduce exercise"
+```

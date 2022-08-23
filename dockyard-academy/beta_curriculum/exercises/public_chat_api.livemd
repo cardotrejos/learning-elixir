@@ -1,0 +1,51 @@
+# Public Chat API
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:httpoison, "~> 1.8"},
+  {:poison, "~> 5.0"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Public Chat API
+
+We have created a public chat application you can [visit in your browser](http://localhost:4000).
+
+To chat on this chat application users need to make a HTTP post request.
+
+Use `HTTPoison.post/3` to send a message to the chat API.
+
+The HTTP POST body should be a JSON string with a "body" field. i.e. `"{\"body\": \"hello!\"}"`.
+The HTTP POST headers should include the `Content-Type` field to specify that the data being sent is JSON.
+
+Ensure that your message appears on the [chat application](http://localhost:4000/).
+
+```elixir
+HTTPoison.post("http://localhost:4000", "{\"body\": \"hello!\"}", [
+  {"Content-Type", "application/json"}
+])
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish public chat api exercise"
+```

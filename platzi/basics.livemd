@@ -1,0 +1,122 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Platzi Course - Basic Types
+
+## Section
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+1 # integer
+1.0 # float
+true # booleans
+[1, 2, 3] # Lists
+{1, 2, 3} # Tuples
+"string"
+:atom
+```
+
+```elixir
+1 + 1
+```
+
+```elixir
+10 / 2
+```
+
+```elixir
+div(10, 2)
+```
+
+```elixir
+rem(10, 2)
+```
+
+```elixir
+rem(10, 2)
+```
+
+```elixir
+round(3.58)
+```
+
+```elixir
+trunc(3.58)
+```
+
+## Identify functions and documentation
+
+```elixir
+Kernel.trunc(1.58)
+```
+
+## Booleans
+
+```elixir
+true == false
+```
+
+```elixir
+is_boolean(1)
+```
+
+```elixir
+is_boolean(true)
+```
+
+```elixir
+is_number(3)
+```
+
+## Atoms or Symbols
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+:apple
+:orange
+:watermelon
+```
+
+```elixir
+:apple == :apple
+```
+
+```elixir
+:apple == :orange
+```
+
+```elixir
+is_atom(true)
+```
+
+```elixir
+is_boolean(true)
+```
+
+```elixir
+is_atom(Hello)
+```
+
+## Strings
+
+```elixir
+"hello"
+```
+
+```elixir
+string = :world
+"hello #{string}"
+```
+
+```elixir
+IO.puts("hello\nworld")
+```
+
+```elixir
+String.length("hello")
+```
+
+```elixir
+String.upcase("Hello")
+```

@@ -1,0 +1,83 @@
+# Filter Values By Type
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Filter Values By Type
+
+Given a list of random items that could be any type, you are going to find all of the items that match a particular type.
+
+For example:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+Filter.floats([1, 2, 3, 4.0])
+[4.0]
+
+Filter.integers([1, 2, 3, 4.0])
+[1, 2, 3]
+
+Filter.maps(["hello", 4.0, %{key: "value"}, %{}])
+[%{key: "value"}, %{}]
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+Implement the `Filter` module below.
+
+```elixir
+defmodule Filter do
+  def integers(list) do
+  end
+
+  def floats(list) do
+  end
+
+  # numbers include floats and integers
+  def numbers do
+  end
+
+  def atoms(list) do
+  end
+
+  # lists will include keyword lists.
+  def lists(list) do
+  end
+
+  def maps(list) do
+  end
+
+  # keyword lists will include empty lists.
+  def keyword_lists(list) do
+  end
+end
+
+Utils.feedback(:filter_by_type, Filter)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish filter values by type exercise"
+```

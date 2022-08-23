@@ -1,0 +1,165 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Basic operators
+
+## Intro
+
+```elixir
+[1, 2, 3] ++ [4, 5, 6]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3, 4, 5, 6]
+```
+
+```elixir
+[1, 2, 3] -- [3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2]
+```
+
+```elixir
+"foo" <> "bar"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"foobar"
+```
+
+```elixir
+true and true
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+false or is_atom(:example)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+1 and true
+```
+
+```elixir
+false and raise("this error will never be raised")
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+```elixir
+true and raise("this error will never be raised")
+```
+
+```elixir
+1 || true
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+false || 11
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+11
+```
+
+```elixir
+# and
+true && 17
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+17
+```
+
+```elixir
+nil && 13
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# not
+!true
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+```elixir
+!1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+```elixir
+!nil
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+1 == 1
+```
+
+```elixir
+1 != 2
+```
+
+```elixir
+1 < 2
+```
+
+```elixir
+1 == 1.0
+```
+
+```elixir
+1 === 1.0
+```

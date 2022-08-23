@@ -1,0 +1,88 @@
+# alias, require, import
+
+## alias
+
+```elixir
+defmodule Math.List do
+end
+```
+
+```elixir
+defmodule Stats do
+  alias Math.List, as: List
+end
+```
+
+```elixir
+alias Math.List as: List
+```
+
+```elixir
+alias Math.List
+```
+
+## require
+
+```elixir
+Integer.is_odd(3)
+```
+
+```elixir
+require Integer
+Integer.is_odd(3)
+```
+
+## import
+
+```elixir
+import Elixir.List, only: [duplicate: 2]
+duplicate(:ok, 3)
+```
+
+```elixir
+defmodule Math do
+  def some_function do
+    import Elixir.List, only: [duplicate: 2]
+    duplicate(:ok, 3)
+  end
+end
+```
+
+```elixir
+Math.some_function()
+```
+
+## module nesting & multi alias, require, import
+
+```elixir
+defmodule Foo do
+  defmodule Bar do
+    def sum(a, b) do
+      a + b
+    end
+  end
+end
+```
+
+```elixir
+defmodule Foo.Bar do
+  def sum(a, b) do
+    a + b
+  end
+end
+
+defmodule Foo do
+  alias Foo.Bar
+  # Bar.sum(a, b)
+end
+```
+
+## multi alias, require, import
+
+```elixir
+# MyApp.Foo
+# MyApp.Bar
+# MyApp.Baz
+
+alias MyApp.{Foo, Bar, Baz}
+```

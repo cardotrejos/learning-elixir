@@ -1,0 +1,85 @@
+# Tic-tac-toe
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Tic-tac-toe
+
+You're going to create a game of [Tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe).
+
+In Tic-tac-toe, players take turns placing either an `X` or an `O` onto a 3 by 3 grid.
+
+The grid will be represented with the following coordinates.
+
+![](images/tic_tac_toe_coordinates.png)
+
+In this game, the player will say the coordinate they want to play, and either an `"X"` or an `"O"` like so:
+This should return a new version of the board with that coordinate filled in.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+board = [
+  [nil, nil, nil],
+  [nil, nil, nil],
+  [nil, nil, nil]
+]
+
+move1 = TicTacToe.play(board, {0, 0}, "X")
+[
+  ["X", nil, nil],
+  [nil, nil, nil],
+  [nil, nil, nil]
+]
+
+TicTacToe.play(move1, {1, 1}, "O")
+[
+  ["X", nil, nil],
+  [nil, "O", nil],
+  [nil, nil, nil]
+]
+```
+
+* **BONUS**: Ensure that the same player cannot play twice in a row.
+
+* **BONUS**: Ensure that a player cannot play in an already filled spot.
+
+* **BONUS**: Omit the `"X"` and `"O"` parameter and instead automatically figure out who's turn it is.
+  (X always plays first)
+
+Enter your answer below.
+
+```elixir
+defmodule TicTacToe do
+  def play(board, coordinate, symbol) do
+  end
+end
+
+Utils.feedback(:tic_tac_toe, TicTacToe)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish tic-tac-toe exercise"
+```

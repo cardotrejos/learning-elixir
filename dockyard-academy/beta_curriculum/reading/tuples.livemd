@@ -1,0 +1,64 @@
+# Tuples
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Tuples
+
+Tuples are fixed size containers for multiple elements.
+Like lists they can contain any data type.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+{}
+{7}
+{1, 2, 3}
+{"example"}
+{1, "pizza", 3, :success, false}
+```
+
+They are often used when you know the number of desired elements and their type.
+For example, it's common in Elixir to use tuples to represent failure or success cases
+with the associated error message or success value.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+{:success, "Well done!"}
+{:error, "Too bad!"}
+```
+
+### Your Turn
+
+In the Elixir cell below, create a tuple with `:ok` as the first element, and `"got it!"` as
+the second element.
+
+```elixir
+
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish tuples section"
+```

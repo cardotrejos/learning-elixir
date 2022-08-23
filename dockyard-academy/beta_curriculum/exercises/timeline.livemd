@@ -1,0 +1,58 @@
+# Timeline
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Timeline
+
+You are building an application which builds a timeline of events.
+
+Users provide you a list of dates in the format `"YYYY-MM-DD"`. Users will always provide 2 or more dates in chronological order.
+
+You will provide the number of days between each date.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+dates = ["2020-05-23", "2020-05-25", "2021-06-10"]
+
+Timeline.generate(dates)
+[2, 381]
+```
+
+Enter your solution below.
+
+```elixir
+defmodule Timeline do
+  def generate(dates) do
+  end
+end
+
+Utils.feedback(:timeline, Timeline)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish timeline exercise"
+```

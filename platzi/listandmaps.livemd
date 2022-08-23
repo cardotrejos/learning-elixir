@@ -1,0 +1,127 @@
+# Keyword lists and maps
+
+## Section
+
+```elixir
+String.split("1 2 3", " ")
+```
+
+```elixir
+String.split("1  2     3", " ")
+```
+
+```elixir
+String.split("1  2     3", " ", trim: true)
+```
+
+```elixir
+[{:trim, true}] = [trim: true]
+```
+
+```elixir
+list = [a: 1, b: 2]
+```
+
+```elixir
+list ++ [c: 3]
+```
+
+```elixir
+[a: 0] ++ list
+```
+
+```elixir
+list[:a]
+```
+
+```elixir
+list[:b]
+```
+
+```elixir
+new_list = [a: 0] ++ list
+```
+
+```elixir
+new_list[:a]
+```
+
+Ecto example query
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+query = 
+  from w in Weather,
+    where: w.prcp > 0,
+    where: w.temp < 20,
+    select: w
+```
+
+## Maps
+
+```elixir
+map = %{:a => 1, :b => 2}
+```
+
+```elixir
+map[:a]
+```
+
+```elixir
+map[2]
+```
+
+```elixir
+%{} = %{:a => 1, :b => 2}
+```
+
+```elixir
+%{:a => a} = %{:a => 1, :b => 2}
+```
+
+```elixir
+a
+```
+
+```elixir
+n = 1
+map = %{n => :one}
+```
+
+```elixir
+%{^n => :one} = %{1 => :one, 2 => :two}
+```
+
+```elixir
+Map.get(%{:a => 1, :b => 2}, :a)
+```
+
+```elixir
+Map.put(%{:a => 1, :b => 2}, :c, 3)
+```
+
+```elixir
+map = %{:a => 1, 2 => :b}
+%{map | 2 => "two"}
+```
+
+```elixir
+map
+```
+
+```elixir
+map = %{:a => 1, :b => 2}
+```
+
+```elixir
+map.a
+```
+
+```elixir
+map.c
+```
+
+```elixir
+%{a: 1, b: 2} === %{:a => 1, :b => 2}
+```

@@ -1,0 +1,429 @@
+# Enum
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Setup
+
+Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
+
+## Overview
+
+Often while programming, you run into problems where you need the ability
+to do something many many times.
+
+For example, let's say you're creating a shopping application.
+In this application, customers create a shopping list.
+
+You're responsible for displaying the cost of each item to the user
+after taxes.
+
+Given a list of costs in pennies, how might you do that
+with what you've learned so far?
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+[100, 200, 150, 200]
+```
+
+With only four items, That would still be a fairly difficult task.
+You would have to extract out each value with pattern matching, and
+then apply some `calculate_tax/1` function to each value, then rebuild
+a new list with the new values
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+[one, two, three, four] = [100, 200, 150, 200]
+
+[calculate_tax.(one), calculate_tax.(two), calculate_tax.(three), calculate_tax.(four)]
+```
+
+However the above would only work for four items, you would need
+to create different cases for every size of list you want to support.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+list = [100, 200, 150, 200]
+
+case list do
+  [] -> []
+  [one] -> [calculate_tax.(one)]
+  [one, two] -> [calculate_tax.(one), calculate_tax.(two)]
+  [one, two, three] -> [calculate_tax.(one), calculate_tax.(two), calculate_tax.(three)]
+  [one, two, three, four] -> [calculate_tax.(one), calculate_tax.(two), calculate_tax.(three), calculate_tax.(four)]
+end
+```
+
+Now imagine if you had to support a hundred items. Or if you
+have enterprise customers who buy thousands of items! This simply doesn't
+scale.
+
+To handle scenarios where we need to repeat an action over and over
+again, we can use **enumeration**. Enumeration is the act of looping through a collection and reading
+its elements for the sake of returning some output.
+
+```mermaid
+flowchart LR
+  Input ---> Enumeration --> Function --> Enumeration
+  Enumeration --> Output
+```
+
+With enumeration, we can `calculate_tax/1` on any number of items with a single line.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+Enum.map(list, fn item -> calculate_tax(item) end)
+```
+
+This lesson will cover tools and techniques to accomplish enumeration.
+In total we will cover:
+
+* **Enumerable** **Collections** that support enumeration.
+* How to use the **Enum** module's built-in functionality with **Collections**.
+
+First, it's useful to know what we can enumerate on.
+
+## Enum
+
+We use the `Enum` module to accomplish enumeration. The Enum module contains
+a large amount of useful functions that all work on enumerable data types.
+
+In Elixir, certain
+data types are **enumerable** which means that we have the ability
+to enumerate through them and apply some function on each element.
+
+These structures are called **Collections** because they contain a collection of
+elements. You are already familiar with them. They are **lists**, **keyword lists**, **ranges**,
+and **maps**.
+
+We'll focus on common `Enum` functions you'll use frequently.
+
+* `Enum.map/2` enumerate over every element and create a new collection with a new value.
+* `Enum.reduce/2` and `Enum.reduce/3`. Enumerate over every element into an accumulated value.
+* `Enum.filter/2` filter out elements from a collection.
+* `Enum.all?/2` check if all elements in a collection match some condition.
+* `Enum.any?/2` check if any elements in a collection match some condition.
+* `Enum.count/1` return the number of elements in a collection collection.
+* `Enum.find/3` return an element in a collection that matches some condition.
+* `Enum.random/1` return a random element in a collection.
+
+The `Enum` module has a lot more functionality. Whenever you think to yourself
+"How can I ____ in a collection" you should see if the `Enum` module has a built-in solution.
+It's not realistic to learn it all upfront. Instead you'll learn functions over time
+whenever you run into a problem that requires `Enum` as a solution.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Enum.map
+
+`Enum.map/2` allows you to enumerate through the collection you provide it as its first argument.
+It then calls a function that you provide it as its second argument on each element.
+It then returns a new collection with the modified values.
+
+```mermaid
+flowchart LR
+  A[Collection] --> E[Enum.map]
+  E --> Function
+  Function --> E
+  E --> B[New Collection]
+```
+
+Here's an example that doubles all the integers in a list.
+
+```elixir
+Enum.map([1, 2, 3, 4], fn integer -> integer * 2 end)
+```
+
+```mermaid
+flowchart LR
+  A["[1, 2, 3, 4]"] --> E[Enum.map]
+  E --> F["fn integer -> integer * 2 end"]
+  F --> E
+  E --> B["[2, 4, 6, 8]"]
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+It's useful to be aware that you can use ranges with enumerables to easily enumerate over large
+ranges without needing to define every element in the list.
+
+```elixir
+Enum.map(1..100, fn integer -> integer * 2 end)
+```
+
+### Your Turn
+
+Back to our example above, how would you use `Enum.map/2` to convert [1, 2] into
+a keyword list? Remember that keyword lists are actually lists of tuples.
+
+In the Elixir cell below, convert `[1, 2]` into `[{:int, 1}, {:int, 2}]`
+
+```elixir
+
+```
+
+### Your Turn (Bonus)
+
+Bonus: In the Elixir cell below, instead of using the generic `:int` atom key, convert
+`1..9` into `[{:one, 1}, {:two, 2}, ...and so on]`. You only need to handle numbers from `0` to `9`.
+
+```elixir
+
+```
+
+### Enum.reduce
+
+<!-- livebook:{"break_markdown":true} -->
+
+`Enum.reduce/2` allows you to enumerator over a collection, except you have more flexibility over
+the output.
+
+You can build up a value using an accumulator, and then return a final value.
+
+```mermaid
+flowchart LR
+  A[Collection] --> E[Enum.reduce]
+  E -- Accumulator --> Function
+  Function -- Accumulator --> E
+  E --> B[Output]
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+Notice that the **output** could be any data type, not just a collection. For example, you could
+use this to take in a list of numbers and sum all of the numbers together.
+
+```elixir
+list = [1, 2, 3, 4]
+
+Enum.reduce(list, fn integer, accumulator -> integer + accumulator end)
+```
+
+By default, the first value in the collection will be the initial accumulator value.
+The function that you pass in as the second argument will then be called on every element after
+the first.
+
+### Enum.reduce/3
+
+You can also override the default accumulator with `Enum.reduce/3`. `Enum.reduce/3` takes three
+arguments. The first is the collection, the second is the default accumulator, and the third
+is the function to call with each element and the accumulator.
+
+`Enum.reduce/3` will call the function on every element, rather than setting the initial accumulator
+as the first element.
+
+```elixir
+Enum.reduce([1, 2, 3], 10, fn integer, accumulator -> integer + accumulator end)
+```
+
+Let's break that down step by step.
+
+```elixir
+Utils.slide(:reduce)
+```
+
+## Enum.filter
+
+The `Enum.filter/2` function allows us to filter elements in a collection. `Enum.filter/2` takes in two
+arguments. The first is a collection, and the second is a function to call on each element
+in the collection. If the function returns `false` then the element is filtered out.
+
+```mermaid
+flowchart LR
+  C[Collection] --> E[Enum.filter]
+  E --> F[Function]
+  F -- boolean --> E
+  F --> true --> A[Keep]
+  F --> false --> B[Remove]
+  E --> O[Filtered Collection]
+```
+
+```elixir
+Enum.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn integer -> integer <= 5 end)
+```
+
+### Enum.all?/2
+
+`Enum.all?/2` takes in a collection and a function. `Enum.all?/2` calls the function on every element
+in the collection. If any element returns `false` then `Enum.all?/2` returns false. Otherwise,
+`Enum.all?/2` returns `true`.
+
+<!-- livebook:{"break_markdown":true} -->
+
+```mermaid
+flowchart LR
+Collection --> E[Enum.all?]
+E --> Function
+Function -- boolean --> E
+E --> Boolean
+```
+
+```elixir
+Enum.all?([1, 2, 3], fn integer -> integer < 5 end)
+```
+
+```elixir
+Enum.all?([1, 2, 10], fn integer -> integer < 5 end)
+```
+
+### Enum.any?/2
+
+`Enum.any?/2` Is much like `Enum.all/2` except it checks if any element in the collection
+returns `true` when called with the passed in function.
+
+```elixir
+Enum.any?([1, 2, 3], fn integer -> integer === 1 end)
+```
+
+```elixir
+Enum.any?([2, 2, 3], fn integer -> integer === 1 end)
+```
+
+### Enum.count/1
+
+`Enum.count/1` returns the number of items in a collection.
+
+```mermaid
+flowchart LR
+  Collection --> Enum.count --> Integer
+```
+
+```elixir
+Enum.count([1, 2, 3])
+```
+
+### Your Turn
+
+In the Elixir cell below, count the number of elements in the `collection`
+
+```elixir
+collection = [1, 2, 3, 4, 5]
+```
+
+### Enum.find/2
+
+`Enum.find/2` takes in a collection and a function. `Enum.find/2` then searches the collection
+and returns the first element that returns true when called as the argument to the passed in function.
+
+```elixir
+Enum.find(["hello", 2, 10], fn each -> is_integer(each) end)
+```
+
+If no element is found, `Enum.find/2` returns `nil`.
+
+```elixir
+Enum.find(["h", "e", "l", "l", "o"], fn each -> is_integer(each) end)
+```
+
+### Your Turn
+
+In the Elixir cell below, use `Enum.find/2` to find `5` in this list.
+
+```elixir
+list = [1, 2, 3, 4, 5]
+```
+
+## Enum.random/1
+
+`Enum.random/1` returns a random element in a collection. It's often used
+to generate random numbers in a range.
+
+```elixir
+Enum.random(1..10)
+```
+
+### Your Turn
+
+In the Elixir cell below, use `Enum.random/1` to retrieve a random element from the `collection`.
+
+```elixir
+collection = ["one", 3, {}]
+```
+
+## Enum On Other Collections
+
+`lists` are only one of many collection types.
+
+### Keyword Lists
+
+Remember that keyword lists are simply lists of tuples.
+
+```elixir
+[{:one, 1}, {:two, 2}]
+```
+
+So whenever an `Enum` module function uses an element inside of the collection, it's a tuple.
+
+```elixir
+Enum.reduce([one: 1], fn tuple, _accumulator -> tuple end)
+```
+
+### Maps
+
+Internally, maps are also treated as tuples in a collection.
+
+```elixir
+Enum.reduce(%{key: "value"}, fn tuple, _accumulator -> tuple end)
+```
+
+### Your Turn
+
+In the Elixir cell below, use `Enum.reduce/2` to sum all of the **values** in a map.
+So `%{key1: 1, key2: 10}` should become 11.
+
+```elixir
+map = %{key1: 1, key2: 10}
+```
+
+In the Elixir cell below, use `Enum.reduce/2` to sum all of the **keys** and **values** in a map.
+So `%{1 => 15, 10 => 12}` should become `38` `(1 + 15 + 10 + 12)`  .
+
+```elixir
+map = %{1 => 15, 10 => 12}
+```
+
+Use `Enum.reduce/2` to sum all of the values in a keyword list.
+so `[add: 20, add: 5]` should become `25`.
+
+```elixir
+keyword_list = [add: 20, add: 5]
+```
+
+## Further Reading
+
+The Enum module has many more functions. You'll have the opportunity to encounter more
+as you need them to solve future challenges.
+
+For more information, you may also wish to read:
+
+* [The Enum Documentation](https://hexdocs.pm/elixir/Enum.html)
+* [Elixir Schools Enum](https://elixirschool.com/en/lessons/basics/enum)
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish enum section"
+```

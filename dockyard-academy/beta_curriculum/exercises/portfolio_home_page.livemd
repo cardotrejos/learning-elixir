@@ -1,0 +1,67 @@
+# Portfolio: Home Page
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Home Page
+
+You're going to create a portfolio project that you will continue to expand throughout the course.
+
+In this exercise, you'll focus on setting up the project and creating a home page.
+
+First, create a new phoenix project.
+
+```
+$ mix phx.new portfolio
+```
+
+Start your phoenix server from the project folder.
+
+```
+$ mix phx.server
+```
+
+Then build a home page under the `"/"` route.
+
+You may take inspiration from the previous [Home Page](./home_page.livemd) exercise.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](images/portfolio_home_page_exercise.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+The home page should be visible when you visit http://localhost:4000/
+
+Try to match the document above as best you can, however you may exercise your creativity and do not have to follow the example so long as you have:
+
+* Navigation with a link to your github. Ideally use a `<nav>` tag for navigation.
+* A heading saying your name.
+* A paragraph that describes who you are and what you do.
+* An image (it can be any image if you would prefer to not use a personal photo)
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish portfolio home page exercise"
+```

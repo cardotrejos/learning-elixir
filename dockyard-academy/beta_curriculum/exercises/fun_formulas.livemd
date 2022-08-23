@@ -1,0 +1,542 @@
+# Fun Formulas
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Setup
+
+Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
+
+## Fun Formulas
+
+As developer's it's our job to translate business requirements into something that the computer understands.
+
+These exercises will have you convert a common formula into an Elixir program.
+
+## Percentage
+
+Let's say we're building a program with a loading bar.
+
+Users download items, and you need to display the current percentage that the download has finished.
+
+You can calculate the percentage with $\frac{completed\ items}{total\ items}\times100$
+
+In the Elixir cell below, calculate the percentage given `completed_items` and `total_items`.
+
+Replace `nil` with your answer.
+
+<!-- livebook:{"attrs":{"assertions":"assert total_items >= completed_items,\n  \"total_items should always be more than completed items, please reset the exercise\"\n\nassert percentage <= 100,\n  \"percentage should be a float between 0 and 100. Please check the formula entered.\"\n\nassert percentage == completed_items / total_items * 100","attempts":3,"code":"completed_items = 10\r\ntotal_items = 100\r\n\r\npercentage = (completed_items / total_items) * 100","solution":"percentage = completed_items / total_items * 100","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      completed_items = 10
+      total_items = 100
+
+      percentage = completed_items / total_items * 100
+
+      assert total_items >= completed_items,
+             "total_items should always be more than completed items, please reset the exercise"
+
+      assert percentage <= 100,
+             "percentage should be a float between 0 and 100. Please check the formula entered."
+
+      assert percentage == completed_items / total_items * 100
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+completed_items = 10
+total_items = 100
+
+percentage = completed_items / total_items * 100
+```
+
+Given a random number of completed_items and total_items, calculate the percentage.
+
+Replace `nil` with your answer.
+
+<!-- livebook:{"attrs":{"assertions":"assert total_items >= completed_items,\n  \"total_items should always be more than completed items, please reset the exercise\"\n\nassert percentage <= 100,\n  \"percentage should be a float between 0 and 100. Please check the formula entered.\"\n\nassert percentage == completed_items / total_items * 100","attempts":4,"code":"completed_items = Utils.random(1..100)\r\ntotal_items = Utils.random(completed_items..100)\r\n\r\npercentage = (completed_items / total_items) * 100","solution":"percentage = completed_items / total_items * 100","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      completed_items = Utils.random(1..100)
+      total_items = Utils.random(completed_items..100)
+
+      percentage = completed_items / total_items * 100
+
+      assert total_items >= completed_items,
+             "total_items should always be more than completed items, please reset the exercise"
+
+      assert percentage <= 100,
+             "percentage should be a float between 0 and 100. Please check the formula entered."
+
+      assert percentage == completed_items / total_items * 100
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+completed_items = Utils.random(1..100)
+total_items = Utils.random(completed_items..100)
+
+percentage = completed_items / total_items * 100
+```
+
+## Rocket Ship
+
+We're building a rocket ship app to teach people about physics.
+
+Users can enter the `mass` and `acceleration` of a ship to visualize the `force` generated.
+
+Given that ${mass} * {acceleration} = force$, calculate force. Replace `nil` with your answer.
+
+<!-- livebook:{"attrs":{"assertions":"assert force == 20","attempts":1,"code":"mass = 10\r\nacceleration = 2\r\n\r\nforce = mass * acceleration","solution":"force = mass * acceleration","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      mass = 10
+      acceleration = 2
+
+      force = mass * acceleration
+      assert force == 20
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+mass = 10
+acceleration = 2
+
+force = mass * acceleration
+```
+
+## What Do You Tip?
+
+Let's build a program to determine how much you should tip your server when you buy a meal.
+
+The formula for calculating a tip is $cost\ of\ the\ meal * tip\ rate = tip\ amount$ where `tip_rate` is the rate you
+would like to tip as a decimal. so `15%` would be `0.15` and `20%` would be `0.2`.
+
+In the Elixir cell below, Use floats to set the `cost_of_the_meal` to represent `$55.50` and the `tip_rate` to represent `20%`.
+Then calculate the `tip_amount`.
+
+Replace `nil` with your answers.
+
+<!-- livebook:{"attrs":{"assertions":"assert tip_rate == 0.20, \"tip rate should be 0.2\"\nassert cost_of_the_meal == 55.5, \"cost_of_the_meal should be 55.5\"\n\nassert tip_amount === cost_of_the_meal * tip_rate,\n  \"tip_amount should be cost_of_the_meal * tip_rate\"","attempts":1,"code":"cost_of_the_meal = 55.50\r\ntip_rate = 0.20\r\n\r\ntip_amount = 55.50 * 0.20","solution":"cost_of_the_meal = 55.5\ntip_rate = 0.2\n\ntip_amount = cost_of_the_meal * tip_rate","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      cost_of_the_meal = 55.50
+      tip_rate = 0.20
+
+      tip_amount = 55.50 * 0.20
+      assert tip_rate == 0.20, "tip rate should be 0.2"
+      assert cost_of_the_meal == 55.5, "cost_of_the_meal should be 55.5"
+
+      assert tip_amount === cost_of_the_meal * tip_rate,
+             "tip_amount should be cost_of_the_meal * tip_rate"
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+cost_of_the_meal = 55.50
+tip_rate = 0.20
+
+tip_amount = 55.50 * 0.20
+```
+
+## Pythagorean Theorum
+
+To calculate the longest side of a triangle we use $a^2 + b^2 = c^2$
+
+First, given `a` and `b`, calculate `c_square` where `c_square` is $c^2$.
+
+<!-- livebook:{"attrs":{"assertions":"assert c_square == 10 ** 2 + 10 ** 2,\n  \"The answer is not correct, please check the formula entered.\"\n","attempts":3,"code":"a = 10\r\nb = 10\r\n\r\nc_square = a ** 2 + b ** 2","solution":"a ** 2 + b ** 2","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      a = 10
+      b = 10
+
+      c_square = a ** 2 + b ** 2
+
+      assert c_square == 10 ** 2 + 10 ** 2,
+             "The answer is not correct, please check the formula entered."
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+a = 10
+b = 10
+
+c_square = a ** 2 + b ** 2
+```
+
+### Bonus!
+
+<!-- livebook:{"break_markdown":true} -->
+
+This is a bonus challenge that requires going beyond what you've already learned.
+
+You need to figure out how to find the square root of a number in Elixir.
+
+Given `c_square`, calculate `c`. Replace `nil` with your answer.
+
+<!-- livebook:{"attrs":{"assertions":"assert c == :math.sqrt(200)","attempts":3,"code":"c_square = 200\r\n\r\nc = :math.sqrt(c_square)","solution":"Check out `:math.sqrt/1`","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule Assertion do
+  use ExUnit.Case
+
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      c_square = 200
+
+      c = :math.sqrt(c_square)
+      assert c == :math.sqrt(200)
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
+  end
+end
+
+ExUnit.run()
+
+# Make variables and modules defined in the test available.
+# Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
+c_square = 200
+
+c = :math.sqrt(c_square)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish fun formulas exercise"
+```

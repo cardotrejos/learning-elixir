@@ -1,0 +1,87 @@
+# File System Todo
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"},
+  {:tested_cell, git: "https://github.com/BrooklinJazz/tested_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Overview
+
+You're going to create a TodoList application with persistence using a file system.
+
+The `TodoList` module should be able to:
+
+`add/1` an item to our todo list.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+TodoList.add("go get groceries")
+{:ok, ["go get groceries"]}
+```
+
+`list/1` the items in our todo list.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+TodoList.list()
+["go get groceries"]
+```
+
+`complete/1` an item in our todo list. This should delete the item and return the remaining elements in the todo list.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+TodoList.complete("go get groceries")
+{:ok, []}
+```
+
+If an item does not exist, it should return an error tuple.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+TodoList.complete("non existing item")
+{:error, :not_found}
+```
+
+Enter your solution in the Elixir cell below.
+
+```elixir
+defmodule TodoList do
+  def add(item) do
+  end
+
+  def complete(item) do
+  end
+
+  def list do
+  end
+end
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish file system todo app exercise"
+```

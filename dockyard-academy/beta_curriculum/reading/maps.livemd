@@ -1,0 +1,248 @@
+# Maps
+
+```elixir
+Mix.install([
+  {:kino, github: "livebook-dev/kino", override: true},
+  {:kino_lab, "~> 0.1.0-dev", github: "jonatanklosko/kino_lab"},
+  {:vega_lite, "~> 0.1.4"},
+  {:kino_vega_lite, "~> 0.1.1"},
+  {:benchee, "~> 0.1"},
+  {:ecto, "~> 3.7"},
+  {:math, "~> 0.7.0"},
+  {:faker, "~> 0.17.0"},
+  {:utils, path: "#{__DIR__}/../utils"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Maps
+
+Maps are another type of associative data structure. In fact maps are the common go-to for a key-value
+data structure. You can create a map using `%{}`. Similar to keyword lists they can have atoms as keys and then any value.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{key: "value"}
+```
+
+However, unlike keyword lists, keys must be unique; otherwise they will be overwritten.
+Elixir is very helpful and provides a warning to let us know we're overriding a duplicate key.
+
+```elixir
+%{duplicate_key: "value1", duplicate_key: "value2"}
+```
+
+Unlike keyword lists, maps do not guarantee key order, which is why you'll notice the returned value of the map below
+does not have the same order as the map created.
+
+```elixir
+%{one: "one", two: "two", three: "three"}
+```
+
+Unlike keyword lists, maps can have any values as the key. Commonly you will see atom-key maps
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{atom_key: "value"}
+```
+
+And also string-key maps.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{"string key" => "value"}
+```
+
+However, the key to a map could be anything! even another map! You will need to use the `=>` symbol
+though, not a colon `:`. `=>` is an equals sign `=` and a greater than symbol `>`.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{[1,2,3] => "value"}
+%{%{example: "my_example"} => "value"}
+%{1 => "value"}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Your Turn
+
+In the Elixir cell below, create a map with string keys and any value. Replace `nil` with your answer.
+
+```elixir
+map = nil
+
+Utils.feedback(:string_key_map, map)
+```
+
+Create a map with atom keys and any value. Replace `nil` with your answer.
+
+```elixir
+map = nil
+
+Utils.feedback(:atom_key_map, map)
+```
+
+Create a map with a non-string or atom key and any value. Replace `nil` with your answer.
+
+```elixir
+map = nil
+
+Utils.feedback(:non_standard_key_map, map)
+```
+
+## Manipulating Maps
+
+Unlike the other data types, there aren't specific map operators. To manipulate maps we
+use a different tool called the [Map](https://hexdocs.pm/elixir/Map.html) module, which you will learn more about in a future lesson.
+
+For now, it's enough to know that you can access values in an atom-key map using a few different methods.
+
+### Accessing Map Values
+
+You can retrieve values in a map using **map.key** notation like so. This only works for maps with
+atom keys.
+
+```elixir
+%{key: "value"}.key
+```
+
+Alternatively, you can access the map value using square bracket notation `[key]`.
+
+```elixir
+%{key: "value"}[:key]
+```
+
+Bracket notation is especially useful for maps with non-atom keys.
+
+```elixir
+%{"key" => "value"}["key"]
+```
+
+```elixir
+%{1 => "value"}[1]
+```
+
+With **map.key** notation, your program will throw an error if your map doesn't have the expected value.
+
+```elixir
+%{}.key
+```
+
+Bracket notation will return `nil` if the key doesn't exist rather than throwing an error.
+
+```elixir
+%{}[:key]
+```
+
+We can access deeply nested values with both dot notation and bracket notation.
+
+```elixir
+%{key1: %{key2: %{key3: "value"}}}.key1.key2.key3
+```
+
+```elixir
+%{1 => %{2 => %{3 => "value"}}}[1][2][3]
+```
+
+Bracket notation is especially useful for accessing deeply nested values without causing a crash
+if the value doesn't exist.
+
+```elixir
+%{}[1][2][3]
+```
+
+You can accomplish all of the same behavior above by binding the map to a variable rather
+than accessing values from the map directly.
+
+```elixir
+map = %{key: "value"}
+map.key
+```
+
+```elixir
+map = %{key: "value"}
+map[:key]
+```
+
+### Your Turn
+
+In the Elixir cell below, access the `:hello` key in `map`.
+Retrieve the value using both **map[key]** and **map.key** notation.
+Replace `nil` with your answer.
+
+```elixir
+map = %{hello: "world"}
+
+value = nil
+
+Utils.feedback(:access_map, value)
+```
+
+### Updating Maps
+
+You can update values in a map using `%{initial_map | updated_values}` syntax like so.
+
+```elixir
+initial = %{key: "value"}
+
+%{initial | key: "new value"}
+```
+
+Elixir does not allow you to mutate values. That means
+the variable `initial` is still `%{key: "value"}`
+
+```elixir
+initial
+```
+
+You can instead store a new variable for the updated map.
+
+```elixir
+updated = %{initial | key: "new value"}
+updated
+```
+
+Or rebind the existing `initial` variable.
+
+```elixir
+initial = %{initial | key: "new value"}
+initial
+```
+
+You can only update existing atom key values in a map, otherwise it will cause an error.
+
+```elixir
+initial = %{}
+%{initial | new_key: "value"}
+```
+
+### Your Turn
+
+Update the `example_key` in the `initial_map` below. Replace `nil` with your answer.
+Change `"value"` to any other value.
+
+```elixir
+initial_map = %{example_key: "value"}
+
+updated_map = nil
+
+Utils.feedback(:update_map, updated_map)
+```
+
+## Commit Your Progress
+
+Run the following in your command line from the project folder to track and save your progress in a Git commit.
+
+```
+$ git add .
+$ git commit -m "finish maps section"
+```

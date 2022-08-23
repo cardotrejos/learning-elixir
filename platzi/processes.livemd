@@ -1,0 +1,68 @@
+# Processes
+
+## Section
+
+```elixir
+pid = spawn(fn -> 1 + 2 end)
+```
+
+```elixir
+Process.alive?(pid)
+```
+
+```elixir
+self()
+```
+
+```elixir
+Process.alive?(self())
+```
+
+```elixir
+send(self(), {:hello, "world"})
+```
+
+```elixir
+receive do
+  {:hello, msg} -> msg
+  {:world, _msg} -> "wont match"
+end
+```
+
+```elixir
+receive do
+  {:hello, msg} -> msg
+after
+  1_000 -> "nothing after 1seg"
+end
+```
+
+```elixir
+parent = self()
+```
+
+```elixir
+spawn(fn -> send(parent, {:hello, self()}) end)
+```
+
+```elixir
+receive do
+  {:hello, pid} -> "Got hello from #{inspect(pid)}"
+end
+```
+
+```elixir
+spawn(fn -> raise "oops" end)
+```
+
+```elixir
+self()
+```
+
+```elixir
+spawn_link(fn -> raise "oops" end)
+```
+
+```elixir
+self()
+```
