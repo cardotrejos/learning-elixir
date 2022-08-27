@@ -46,7 +46,7 @@ When the current card is `4` and the current count is `0` what is the `next_coun
 Use arithmetic operators `+` or `-` with the `count` variable to set the `next_count`.  
 Replace `nil` with your answer.
 
-<!-- livebook:{"attrs":{"assertions":"assert next_count === 1","attempts":1,"code":"card = 4\r\ncount = 0\r\n\r\nnext_count = count + 1","solution":"next_count = count + 1","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert next_count === 1","attempts":5,"code":"card = 4\r\ncount = 0\r\n\r\nnext_count = if card >= 1 && card <= 6 do\r\n                count + 1\r\n             end ","solution":"next_count = count + 1","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -60,7 +60,11 @@ defmodule Assertion do
       card = 4
       count = 0
 
-      next_count = count + 1
+      next_count =
+        if card >= 1 && card <= 6 do
+          count + 1
+        end
+
       assert next_count === 1
     catch
       error ->
@@ -115,7 +119,10 @@ ExUnit.run()
 card = 4
 count = 0
 
-next_count = count + 1
+next_count =
+  if card >= 1 && card <= 6 do
+    count + 1
+  end
 ```
 
 ### Card (7)
