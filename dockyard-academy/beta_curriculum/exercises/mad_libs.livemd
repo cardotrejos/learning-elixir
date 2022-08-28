@@ -33,7 +33,7 @@ In the Elixir cell below bind `name_of_company`, `a_defined_offering`, `a_define
 
 Then use string concatenation to concentenate the variables to create the madlib above.
 
-<!-- livebook:{"attrs":{"assertions":"assert is_binary(name_of_company) and name_of_company != \"\", \"name_of_company should be a non-empty string\"\nassert is_binary(a_defined_offering) and a_defined_offering != \"\", \"a_defined_offering should be a non-empty string\"\nassert is_binary(a_defined_audience) and a_defined_audience != \"\", \"a_defined_audience should be a non-empty string\"\nassert is_binary(solve_a_problem) and solve_a_problem != \"\", \"solve_a_problem should be a non-empty string\"\nassert is_binary(secret_sauce) and secret_sauce != \"\", \"secret_sauce should be a non-empty string\"\nassert String.contains?(madlib, name_of_company), \"name_of_company should be used in the madlib\"\nassert String.contains?(madlib, a_defined_offering), \"a_defined_offering should be used in the madlib\"\nassert String.contains?(madlib, a_defined_audience), \"a_defined_audience should be used in the madlib\"\nassert String.contains?(madlib, solve_a_problem), \"solve_a_problem should be used in the madlib\"\nassert String.contains?(madlib, secret_sauce), \"secret_sauce should be used in the madlib\"\nmadlib = \"My company, \" <> name_of_company <> \", is developing \" <> a_defined_offering <> \" to help \" <> a_defined_audience <> \" \" <> solve_a_problem <> \" with \" <> secret_sauce <> \".\"","code":"name_of_company = nil\r\na_defined_offering = nil\r\na_defined_audience = nil\r\nsolve_a_problem = nil\r\nsecret_sauce = nil\r\n\r\nmadlib = nil","solution":"name_of_company = \"DockYard\"\na_defined_offering = \"DockYard Academy\"\na_defined_audience = \"students\"\nsolve_a_problem = \"learn Elixir\"\nsecret_sauce = \"Livebook\"\n\nmadlib =\n  \"My company, \" <>\n    name_of_company <>\n    \", is developing \" <>\n    a_defined_offering <>\n    \" to help \" <> a_defined_audience <> \" \" <> solve_a_problem <> \" with \" <> secret_sauce <> \".\""},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert is_binary(name_of_company) and name_of_company != \"\", \"name_of_company should be a non-empty string\"\nassert is_binary(a_defined_offering) and a_defined_offering != \"\", \"a_defined_offering should be a non-empty string\"\nassert is_binary(a_defined_audience) and a_defined_audience != \"\", \"a_defined_audience should be a non-empty string\"\nassert is_binary(solve_a_problem) and solve_a_problem != \"\", \"solve_a_problem should be a non-empty string\"\nassert is_binary(secret_sauce) and secret_sauce != \"\", \"secret_sauce should be a non-empty string\"\nassert String.contains?(madlib, name_of_company), \"name_of_company should be used in the madlib\"\nassert String.contains?(madlib, a_defined_offering), \"a_defined_offering should be used in the madlib\"\nassert String.contains?(madlib, a_defined_audience), \"a_defined_audience should be used in the madlib\"\nassert String.contains?(madlib, solve_a_problem), \"solve_a_problem should be used in the madlib\"\nassert String.contains?(madlib, secret_sauce), \"secret_sauce should be used in the madlib\"\nmadlib = \"My company, \" <> name_of_company <> \", is developing \" <> a_defined_offering <> \" to help \" <> a_defined_audience <> \" \" <> solve_a_problem <> \" with \" <> secret_sauce <> \".\"","attempts":1,"code":"name_of_company = \"DockYard\"\r\na_defined_offering = \"DockYard Academy\"\r\na_defined_audience = \"students\"\r\nsolve_a_problem = \"learn Elixir\"\r\nsecret_sauce = \"Livebook\"\r\n\r\nmadlib =\r\n  \"My company, \" <>\r\n    name_of_company <>\r\n    \", is developing \" <>\r\n    a_defined_offering <>\r\n    \" to help \" <> a_defined_audience <> \" \" <> solve_a_problem <> \" with \" <> secret_sauce <> \".\"","solution":"name_of_company = \"DockYard\"\na_defined_offering = \"DockYard Academy\"\na_defined_audience = \"students\"\nsolve_a_problem = \"learn Elixir\"\nsecret_sauce = \"Livebook\"\n\nmadlib =\n  \"My company, \" <>\n    name_of_company <>\n    \", is developing \" <>\n    a_defined_offering <>\n    \" to help \" <> a_defined_audience <> \" \" <> solve_a_problem <> \" with \" <> secret_sauce <> \".\"","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -41,51 +41,101 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    name_of_company = nil
-    a_defined_offering = nil
-    a_defined_audience = nil
-    solve_a_problem = nil
-    secret_sauce = nil
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      name_of_company = "DockYard"
+      a_defined_offering = "DockYard Academy"
+      a_defined_audience = "students"
+      solve_a_problem = "learn Elixir"
+      secret_sauce = "Livebook"
 
-    madlib = nil
+      madlib =
+        "My company, " <>
+          name_of_company <>
+          ", is developing " <>
+          a_defined_offering <>
+          " to help " <>
+          a_defined_audience <> " " <> solve_a_problem <> " with " <> secret_sauce <> "."
 
-    assert is_binary(name_of_company) and name_of_company != "",
-           "name_of_company should be a non-empty string"
+      assert is_binary(name_of_company) and name_of_company != "",
+             "name_of_company should be a non-empty string"
 
-    assert is_binary(a_defined_offering) and a_defined_offering != "",
-           "a_defined_offering should be a non-empty string"
+      assert is_binary(a_defined_offering) and a_defined_offering != "",
+             "a_defined_offering should be a non-empty string"
 
-    assert is_binary(a_defined_audience) and a_defined_audience != "",
-           "a_defined_audience should be a non-empty string"
+      assert is_binary(a_defined_audience) and a_defined_audience != "",
+             "a_defined_audience should be a non-empty string"
 
-    assert is_binary(solve_a_problem) and solve_a_problem != "",
-           "solve_a_problem should be a non-empty string"
+      assert is_binary(solve_a_problem) and solve_a_problem != "",
+             "solve_a_problem should be a non-empty string"
 
-    assert is_binary(secret_sauce) and secret_sauce != "",
-           "secret_sauce should be a non-empty string"
+      assert is_binary(secret_sauce) and secret_sauce != "",
+             "secret_sauce should be a non-empty string"
 
-    assert String.contains?(madlib, name_of_company),
-           "name_of_company should be used in the madlib"
+      assert String.contains?(madlib, name_of_company),
+             "name_of_company should be used in the madlib"
 
-    assert String.contains?(madlib, a_defined_offering),
-           "a_defined_offering should be used in the madlib"
+      assert String.contains?(madlib, a_defined_offering),
+             "a_defined_offering should be used in the madlib"
 
-    assert String.contains?(madlib, a_defined_audience),
-           "a_defined_audience should be used in the madlib"
+      assert String.contains?(madlib, a_defined_audience),
+             "a_defined_audience should be used in the madlib"
 
-    assert String.contains?(madlib, solve_a_problem),
-           "solve_a_problem should be used in the madlib"
+      assert String.contains?(madlib, solve_a_problem),
+             "solve_a_problem should be used in the madlib"
 
-    assert String.contains?(madlib, secret_sauce), "secret_sauce should be used in the madlib"
+      assert String.contains?(madlib, secret_sauce), "secret_sauce should be used in the madlib"
 
-    madlib =
-      "My company, " <>
-        name_of_company <>
-        ", is developing " <>
-        a_defined_offering <>
-        " to help " <>
-        a_defined_audience <> " " <> solve_a_problem <> " with " <> secret_sauce <> "."
+      madlib =
+        "My company, " <>
+          name_of_company <>
+          ", is developing " <>
+          a_defined_offering <>
+          " to help " <>
+          a_defined_audience <> " " <> solve_a_problem <> " with " <> secret_sauce <> "."
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -93,13 +143,19 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-name_of_company = nil
-a_defined_offering = nil
-a_defined_audience = nil
-solve_a_problem = nil
-secret_sauce = nil
+# Unfortunately, this results in duplication of warnings.
+name_of_company = "DockYard"
+a_defined_offering = "DockYard Academy"
+a_defined_audience = "students"
+solve_a_problem = "learn Elixir"
+secret_sauce = "Livebook"
 
-madlib = nil
+madlib =
+  "My company, " <>
+    name_of_company <>
+    ", is developing " <>
+    a_defined_offering <>
+    " to help " <> a_defined_audience <> " " <> solve_a_problem <> " with " <> secret_sauce <> "."
 ```
 
 ```elixir
@@ -125,7 +181,7 @@ In the Elixir cell below, fill in `blank1`, `blank2`, and `blank3` with a word t
 
 Then use string interpololation to interpolate these values into a single string bound to the `madlib` variable.
 
-<!-- livebook:{"attrs":{"assertions":"assert is_binary(blank1) and blank1 != \"\", \"blank1 should be a non-empty string\"\nassert is_binary(blank2) and blank2 != \"\", \"blank2 should be a non-empty string\"\nassert is_binary(blank3) and blank3 != \"\", \"blank3 should be a non-empty string\"\nassert madlib == \"A programmer is a #{blank1} that turns #{blank2} into #{blank3}.\"","code":"blank1 = nil\r\nblank2 = nil\r\nblank3 = nil\r\n\r\nmadlib = nil","solution":"blank1 = \"machine\"\nblank2 = \"coffee\"\nblank3 = \"code\n\nmadlib = \"A programmer is a #{blank1} that turns #{blank2} into #{blank3}.\""},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert is_binary(blank1) and blank1 != \"\", \"blank1 should be a non-empty string\"\nassert is_binary(blank2) and blank2 != \"\", \"blank2 should be a non-empty string\"\nassert is_binary(blank3) and blank3 != \"\", \"blank3 should be a non-empty string\"\nassert madlib == \"A programmer is a #{blank1} that turns #{blank2} into #{blank3}.\"","attempts":2,"code":"blank1 = \"person\"\r\nblank2 = \"code\"\r\nblank3 = \"apps\"\r\n\r\nmadlib = \"A programmer is a \" <> blank1 <> \" that turns \"  <> blank2 <> \" into \" <> blank3 <> \".\"","solution":"blank1 = \"machine\"\nblank2 = \"coffee\"\nblank3 = \"code\n\nmadlib = \"A programmer is a #{blank1} that turns #{blank2} into #{blank3}.\"","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -133,16 +189,62 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    blank1 = nil
-    blank2 = nil
-    blank3 = nil
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      blank1 = "person"
+      blank2 = "code"
+      blank3 = "apps"
 
-    madlib = nil
-    assert is_binary(blank1) and blank1 != "", "blank1 should be a non-empty string"
-    assert is_binary(blank2) and blank2 != "", "blank2 should be a non-empty string"
-    assert is_binary(blank3) and blank3 != "", "blank3 should be a non-empty string"
-    assert madlib == "A programmer is a #{blank1} that turns #{blank2} into #{blank3}."
+      madlib =
+        "A programmer is a " <> blank1 <> " that turns " <> blank2 <> " into " <> blank3 <> "."
+
+      assert is_binary(blank1) and blank1 != "", "blank1 should be a non-empty string"
+      assert is_binary(blank2) and blank2 != "", "blank2 should be a non-empty string"
+      assert is_binary(blank3) and blank3 != "", "blank3 should be a non-empty string"
+      assert madlib == "A programmer is a #{blank1} that turns #{blank2} into #{blank3}."
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -150,11 +252,12 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-blank1 = nil
-blank2 = nil
-blank3 = nil
+# Unfortunately, this results in duplication of warnings.
+blank1 = "person"
+blank2 = "code"
+blank3 = "apps"
 
-madlib = nil
+madlib = "A programmer is a " <> blank1 <> " that turns " <> blank2 <> " into " <> blank3 <> "."
 ```
 
 ## Commit Your Progress
