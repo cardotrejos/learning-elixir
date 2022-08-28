@@ -51,7 +51,7 @@ Given a `player_choice` of either `:rock`, `:paper`, or `:scissors` determining 
 Replace `nil` with your answer. Change `player_choice` to `:rock`, `:paper`, and `:scissors` to ensure
 your solution works correctly.
 
-<!-- livebook:{"attrs":{"assertions":"case player_choice do\n  :rock ->\n    assert ai_choice === :paper,\n      \"when player_choice is :rock, ai_choice should be :paper.\"\n\n  :paper ->\n    assert ai_choice === :scissors,\n      \"when player_choice is :paper, ai_choice should be :scissors.\"\n\n  :scissors ->\n    assert ai_choice === :rock,\n      \"when player_choice is :scissors, ai_choice should be :rock.\"\nend","code":"player_choice = :rock\r\n\r\nai_choice = nil","solution":"ai_choice =\n  (player_choice == :scissors && :rock) ||\n    (player_choice == :rock && :paper) ||\n    (player_choice == :paper && :scissors)"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"case player_choice do\n  :rock ->\n    assert ai_choice === :paper,\n      \"when player_choice is :rock, ai_choice should be :paper.\"\n\n  :paper ->\n    assert ai_choice === :scissors,\n      \"when player_choice is :paper, ai_choice should be :scissors.\"\n\n  :scissors ->\n    assert ai_choice === :rock,\n      \"when player_choice is :scissors, ai_choice should be :rock.\"\nend","attempts":6,"code":"player_choice = :rock\r\n\r\nai_choice = (player_choice == :scissors && :rock) ||\r\n    (player_choice == :rock && :paper) ||\r\n    (player_choice == :paper && :scissors)","solution":"ai_choice =\n  (player_choice == :scissors && :rock) ||\n    (player_choice == :rock && :paper) ||\n    (player_choice == :paper && :scissors)","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -59,23 +59,70 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    player_choice = :rock
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      player_choice = :rock
 
-    ai_choice = nil
+      ai_choice =
+        (player_choice == :scissors && :rock) ||
+          (player_choice == :rock && :paper) ||
+          (player_choice == :paper && :scissors)
 
-    case player_choice do
-      :rock ->
-        assert ai_choice === :paper,
-               "when player_choice is :rock, ai_choice should be :paper."
+      case player_choice do
+        :rock ->
+          assert ai_choice === :paper,
+                 "when player_choice is :rock, ai_choice should be :paper."
 
-      :paper ->
-        assert ai_choice === :scissors,
-               "when player_choice is :paper, ai_choice should be :scissors."
+        :paper ->
+          assert ai_choice === :scissors,
+                 "when player_choice is :paper, ai_choice should be :scissors."
 
-      :scissors ->
-        assert ai_choice === :rock,
-               "when player_choice is :scissors, ai_choice should be :rock."
+        :scissors ->
+          assert ai_choice === :rock,
+                 "when player_choice is :scissors, ai_choice should be :rock."
+      end
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
     end
   end
 end
@@ -84,9 +131,13 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
 player_choice = :rock
 
-ai_choice = nil
+ai_choice =
+  (player_choice == :scissors && :rock) ||
+    (player_choice == :rock && :paper) ||
+    (player_choice == :paper && :scissors)
 ```
 
 ## Create Two Player Rock Paper Scissors
@@ -114,7 +165,7 @@ w --> p2
 
 Replace `nil` with your answer.
 
-<!-- livebook:{"attrs":{"assertions":"case {player1_choice, player2_choice} do\n  {:rock, :scissors} -> assert winner == :player1\n  {:paper, :rock} -> assert winner == :player1\n  {:scissors, :paper} -> assert winner == :player1\n  {:scissors, :rock} -> assert winner == :player2\n  {:rock, :paper} -> assert winner == :player2\n  {:paper, :scissors} -> assert winner == :player2\n  _ -> assert winner == :draw\nend","code":"# Will be either :rock, :paper, or :scissors\r\nplayer1_choice = Utils.random(:rock_paper_scissors)\r\n# Will be either :rock, :paper, or :scissors\r\nplayer2_choice = Utils.random(:rock_paper_scissors)\r\n\r\nwinner = nil","solution":"winner =\n  (player1_choice == :scissors && player2_choice == :rock && :player2) ||\n    (player1_choice == :rock && player2_choice == :paper && :player2) ||\n    (player1_choice == :paper && player2_choice == :scissors && :player2) ||\n    (player1_choice == player2_choice && :draw) ||\n    :player1"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"case {player1_choice, player2_choice} do\n  {:rock, :scissors} -> assert winner == :player1\n  {:paper, :rock} -> assert winner == :player1\n  {:scissors, :paper} -> assert winner == :player1\n  {:scissors, :rock} -> assert winner == :player2\n  {:rock, :paper} -> assert winner == :player2\n  {:paper, :scissors} -> assert winner == :player2\n  _ -> assert winner == :draw\nend","attempts":6,"code":"# Will be either :rock, :paper, or :scissors\r\nplayer1_choice = Utils.random(:rock_paper_scissors)\r\n# Will be either :rock, :paper, or :scissors\r\nplayer2_choice = Utils.random(:rock_paper_scissors)\r\n\r\nwinner =\r\n  (player1_choice == :scissors && player2_choice == :rock && :player2) ||\r\n    (player1_choice == :rock && player2_choice == :paper && :player2) ||\r\n    (player1_choice == :paper && player2_choice == :scissors && :player2) ||\r\n    (player1_choice == player2_choice && :draw) ||\r\n    :player1","solution":"winner =\n  (player1_choice == :scissors && player2_choice == :rock && :player2) ||\n    (player1_choice == :rock && player2_choice == :paper && :player2) ||\n    (player1_choice == :paper && player2_choice == :scissors && :player2) ||\n    (player1_choice == player2_choice && :draw) ||\n    :player1","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -122,22 +173,71 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    # Will be either :rock, :paper, or :scissors
-    player1_choice = Utils.random(:rock_paper_scissors)
-    # Will be either :rock, :paper, or :scissors
-    player2_choice = Utils.random(:rock_paper_scissors)
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      # Will be either :rock, :paper, or :scissors
+      player1_choice = Utils.random(:rock_paper_scissors)
+      # Will be either :rock, :paper, or :scissors
+      player2_choice = Utils.random(:rock_paper_scissors)
 
-    winner = nil
+      winner =
+        (player1_choice == :scissors && player2_choice == :rock && :player2) ||
+          (player1_choice == :rock && player2_choice == :paper && :player2) ||
+          (player1_choice == :paper && player2_choice == :scissors && :player2) ||
+          (player1_choice == player2_choice && :draw) ||
+          :player1
 
-    case {player1_choice, player2_choice} do
-      {:rock, :scissors} -> assert winner == :player1
-      {:paper, :rock} -> assert winner == :player1
-      {:scissors, :paper} -> assert winner == :player1
-      {:scissors, :rock} -> assert winner == :player2
-      {:rock, :paper} -> assert winner == :player2
-      {:paper, :scissors} -> assert winner == :player2
-      _ -> assert winner == :draw
+      case {player1_choice, player2_choice} do
+        {:rock, :scissors} -> assert winner == :player1
+        {:paper, :rock} -> assert winner == :player1
+        {:scissors, :paper} -> assert winner == :player1
+        {:scissors, :rock} -> assert winner == :player2
+        {:rock, :paper} -> assert winner == :player2
+        {:paper, :scissors} -> assert winner == :player2
+        _ -> assert winner == :draw
+      end
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
     end
   end
 end
@@ -146,12 +246,18 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
 # Will be either :rock, :paper, or :scissors
 player1_choice = Utils.random(:rock_paper_scissors)
 # Will be either :rock, :paper, or :scissors
 player2_choice = Utils.random(:rock_paper_scissors)
 
-winner = nil
+winner =
+  (player1_choice == :scissors && player2_choice == :rock && :player2) ||
+    (player1_choice == :rock && player2_choice == :paper && :player2) ||
+    (player1_choice == :paper && player2_choice == :scissors && :player2) ||
+    (player1_choice == player2_choice && :draw) ||
+    :player1
 ```
 
 ## Commit Your Progress
