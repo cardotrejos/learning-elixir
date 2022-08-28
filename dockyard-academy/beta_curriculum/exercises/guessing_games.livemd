@@ -32,7 +32,7 @@ In the Elixir cell below create a word guessing game.
 Run the code with a correct and incorrect `guess` to ensure
 your code passes the tests.
 
-<!-- livebook:{"attrs":{"assertions":"assert Enum.all?([guess, answer, correct], &is_binary/1),\n  \"Ensure `guess`, `answer`, and `correct` are all strings\"\n\nif guess == answer do\n  assert correct == \"Correct!\"\nelse\n  assert correct == \"Incorrect.\"\nend","code":"guess = nil\r\nanswer = nil\r\n\r\ncorrect = nil","solution":"correct = if guess == answer, do: \"Correct!\", else: \"Incorrect.\""},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert Enum.all?([guess, answer, correct], &is_binary/1),\n  \"Ensure `guess`, `answer`, and `correct` are all strings\"\n\nif guess == answer do\n  assert correct == \"Correct!\"\nelse\n  assert correct == \"Incorrect.\"\nend","attempts":7,"code":"guess = \"hangman\"\r\nanswer = \"hangman\"\r\n\r\ncorrect = if guess == answer, do: \"Correct!\", else: \"Incorrect.\"","solution":"correct = if guess == answer, do: \"Correct!\", else: \"Incorrect.\"","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -40,19 +40,63 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    guess = nil
-    answer = nil
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      guess = "hangman"
+      answer = "hangman"
 
-    correct = nil
+      correct = if guess == answer, do: "Correct!", else: "Incorrect."
 
-    assert Enum.all?([guess, answer, correct], &is_binary/1),
-           "Ensure `guess`, `answer`, and `correct` are all strings"
+      assert Enum.all?([guess, answer, correct], &is_binary/1),
+             "Ensure `guess`, `answer`, and `correct` are all strings"
 
-    if guess == answer do
-      assert correct == "Correct!"
-    else
-      assert correct == "Incorrect."
+      if guess == answer do
+        assert correct == "Correct!"
+      else
+        assert correct == "Incorrect."
+      end
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
     end
   end
 end
@@ -61,10 +105,11 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-guess = nil
-answer = nil
+# Unfortunately, this results in duplication of warnings.
+guess = "hangman"
+answer = "hangman"
 
-correct = nil
+correct = if guess == answer, do: "Correct!", else: "Incorrect."
 ```
 
 ## Guess the Number
@@ -80,7 +125,7 @@ In the Elixir cell below create a number guessing game.
 Run your code with an equal, smaller, and larger `guess` than the `answer` to ensure your
 code passes all tests.
 
-<!-- livebook:{"attrs":{"assertions":"assert is_integer(guess), \"Ensure `guess` is an integer\"\nassert is_integer(answer), \"Ensure `answer` is an integer\"\nassert is_binary(correct), \"Ensure `correct` is a string\"\n\ncond do\n  guess == answer -> assert correct == \"Correct!\"\n  guess < answer -> assert correct == \"Too low!\"\n  guess > answer -> assert correct == \"Too high!\"\nend","code":"guess = nil\r\nanswer = nil\r\n\r\ncorrect = nil","solution":"correct =\n  cond do\n    guess == answer -> \"Correct!\"\n    guess < answer -> \"Too low!\"\n    guess > answer -> \"Too high!\"\n  end"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert is_integer(guess), \"Ensure `guess` is an integer\"\nassert is_integer(answer), \"Ensure `answer` is an integer\"\nassert is_binary(correct), \"Ensure `correct` is a string\"\n\ncond do\n  guess == answer -> assert correct == \"Correct!\"\n  guess < answer -> assert correct == \"Too low!\"\n  guess > answer -> assert correct == \"Too high!\"\nend","attempts":7,"code":"guess = 12\r\nanswer = 13\r\n\r\ncorrect = cond do\r\n    guess == answer -> \"Correct!\"\r\n    guess < answer -> \"Too low!\"\r\n    guess > answer -> \"Too high!\"\r\n  end","solution":"correct =\n  cond do\n    guess == answer -> \"Correct!\"\n    guess < answer -> \"Too low!\"\n    guess > answer -> \"Too high!\"\n  end","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -88,19 +133,69 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    guess = nil
-    answer = nil
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      guess = 12
+      answer = 13
 
-    correct = nil
-    assert is_integer(guess), "Ensure `guess` is an integer"
-    assert is_integer(answer), "Ensure `answer` is an integer"
-    assert is_binary(correct), "Ensure `correct` is a string"
+      correct =
+        cond do
+          guess == answer -> "Correct!"
+          guess < answer -> "Too low!"
+          guess > answer -> "Too high!"
+        end
 
-    cond do
-      guess == answer -> assert correct == "Correct!"
-      guess < answer -> assert correct == "Too low!"
-      guess > answer -> assert correct == "Too high!"
+      assert is_integer(guess), "Ensure `guess` is an integer"
+      assert is_integer(answer), "Ensure `answer` is an integer"
+      assert is_binary(correct), "Ensure `correct` is a string"
+
+      cond do
+        guess == answer -> assert correct == "Correct!"
+        guess < answer -> assert correct == "Too low!"
+        guess > answer -> assert correct == "Too high!"
+      end
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
     end
   end
 end
@@ -109,10 +204,16 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-guess = nil
-answer = nil
+# Unfortunately, this results in duplication of warnings.
+guess = 12
+answer = 13
 
-correct = nil
+correct =
+  cond do
+    guess == answer -> "Correct!"
+    guess < answer -> "Too low!"
+    guess > answer -> "Too high!"
+  end
 ```
 
 ## Commit Your Progress
