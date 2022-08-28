@@ -269,7 +269,7 @@ Use pattern matching to bind `"jewel"` to a variable called `jewel`.
 Replace `jewel` with your answer.
 
 ```elixir
-jewel = [1, 2, "jewel"]
+[_, _, jewel] = [1, 2, "jewel"]
 
 Utils.feedback(:jewel, jewel)
 ```
@@ -301,6 +301,8 @@ Use `IO.inspect` to print the `hello` variable.
 
 ```elixir
 hello = "world!"
+
+IO.inspect(hello)
 ```
 
 ## Commit Your Progress
