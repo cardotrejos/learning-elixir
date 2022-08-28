@@ -43,7 +43,7 @@ Bind a variable `small`, `medium`, and `large` to represent the point value as a
 
 Replace `nil` with your answers.
 
-<!-- livebook:{"attrs":{"assertions":"assert small == 5\nassert medium == 20\nassert large == 30","code":"small = nil\r\nmedium = nil\r\nlarge = nil","solution":"small = 5\nmedium = 20\nlarge = 30"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert small == 5\nassert medium == 20\nassert large == 30","attempts":2,"code":"small = 5\r\nmedium = 20\r\nlarge = 30","solution":"small = 5\nmedium = 20\nlarge = 30","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -51,13 +51,57 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    small = nil
-    medium = nil
-    large = nil
-    assert small == 5
-    assert medium == 20
-    assert large == 30
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      small = 5
+      medium = 20
+      large = 30
+      assert small == 5
+      assert medium == 20
+      assert large == 30
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -65,9 +109,10 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-small = nil
-medium = nil
-large = nil
+# Unfortunately, this results in duplication of warnings.
+small = 5
+medium = 20
+large = 30
 ```
 
 ### Add Tasks
@@ -78,7 +123,7 @@ Use the `small` and `medium` variables to calculate your answer.
 
 Replace `nil` with your answer below.
 
-<!-- livebook:{"attrs":{"assertions":"assert total_points == 20 + 5","code":"total_points = nil","solution":"total_points = small + medium"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert total_points == 20 + 5","attempts":2,"code":"small = 5\nmedium = 20\ntotal_points = small + medium","solution":"total_points = small + medium","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -86,9 +131,55 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    total_points = nil
-    assert total_points == 20 + 5
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      small = 5
+      medium = 20
+      total_points = small + medium
+      assert total_points == 20 + 5
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -96,7 +187,10 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-total_points = nil
+# Unfortunately, this results in duplication of warnings.
+small = 5
+medium = 20
+total_points = small + medium
 ```
 
 ### Point Goal Percentages
@@ -110,7 +204,7 @@ Remember that you can calculate percentage with $\frac{points}{point\ goal} * 10
 
 Replace `nil` with your answer below.
 
-<!-- livebook:{"attrs":{"assertions":"assert percentage == (5 + 20) / 40 * 100","code":"point_goal = 40\r\n\r\npercentage = nil","solution":"percentage = (small + medium) / point_goal * 100"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert percentage == (5 + 20) / 40 * 100","attempts":2,"code":"point_goal = 40\r\n\r\npercentage = (25/40) * 100","solution":"percentage = (small + medium) / point_goal * 100","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -118,11 +212,55 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    point_goal = 40
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      point_goal = 40
 
-    percentage = nil
-    assert percentage == (5 + 20) / 40 * 100
+      percentage = 25 / 40 * 100
+      assert percentage == (5 + 20) / 40 * 100
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -130,9 +268,10 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
+# Unfortunately, this results in duplication of warnings.
 point_goal = 40
 
-percentage = nil
+percentage = 25 / 40 * 100
 ```
 
 ### New Feature Added - Penalties
@@ -149,7 +288,7 @@ A user has completed
 
 What is their total point score? Replace `nil` with your answer.
 
-<!-- livebook:{"attrs":{"assertions":"assert total_points == 5 + 20 + 30 * 0.5","code":"total_points = nil","solution":"total_points = small + medium + large * 0.5"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert total_points == 5 + 20 + 30 * 0.5","attempts":5,"code":"small = 5\nmedium = 20\nlarge = 30\n\ntotal_points = small + medium + large/2","solution":"total_points = small + medium + large * 0.5","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -157,9 +296,57 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    total_points = nil
-    assert total_points == 5 + 20 + 30 * 0.5
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      small = 5
+      medium = 20
+      large = 30
+
+      total_points = small + medium + large / 2
+      assert total_points == 5 + 20 + 30 * 0.5
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -167,7 +354,12 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-total_points = nil
+# Unfortunately, this results in duplication of warnings.
+small = 5
+medium = 20
+large = 30
+
+total_points = small + medium + large / 2
 ```
 
 A user has completed
@@ -177,7 +369,7 @@ A user has completed
 
 What is their total point score? Replace `nil` with your answer.
 
-<!-- livebook:{"attrs":{"assertions":"assert total_points == 5 / 2 * 3 + 20 / 2 * 3","code":"total_points = nil","solution":"total_points = small / 2 * 3 + medium / 2 * 3"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert total_points == 5 / 2 * 3 + 20 / 2 * 3","attempts":1,"code":"small = 5\nmedium = 20\n\ntotal_points = (3*medium/2) + (3*small/2)","solution":"total_points = small / 2 * 3 + medium / 2 * 3","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -185,9 +377,56 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    total_points = nil
-    assert total_points == 5 / 2 * 3 + 20 / 2 * 3
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      small = 5
+      medium = 20
+
+      total_points = 3 * medium / 2 + 3 * small / 2
+      assert total_points == 5 / 2 * 3 + 20 / 2 * 3
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -195,7 +434,11 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-total_points = nil
+# Unfortunately, this results in duplication of warnings.
+small = 5
+medium = 20
+
+total_points = 3 * medium / 2 + 3 * small / 2
 ```
 
 ### New Feature Added - Rewards
@@ -214,7 +457,7 @@ A user has completed:
 
 What is their total point score? Replace `nil` with your answer.
 
-<!-- livebook:{"attrs":{"assertions":"assert total_points == 20 * 1.6 + 5 * 1.6 + 30 * 0.5","code":"total_points = nil","solution":"total_points = medium * 1.6 + small * 1.6 + large * 0.5"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assertions":"assert total_points == 20 * 1.6 + 5 * 1.6 + 30 * 0.5","attempts":2,"code":"small = 5\nmedium = 20\nlarge = 30\n\ntotal_points = small * 1.6 + medium * 1.6 + large * 0.5","solution":"total_points = medium * 1.6 + small * 1.6 + large * 0.5","title":"Exercise"},"kind":"Elixir.TestedCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 ExUnit.start(auto_run: false)
@@ -222,9 +465,57 @@ ExUnit.start(auto_run: false)
 defmodule Assertion do
   use ExUnit.Case
 
-  test "" do
-    total_points = nil
-    assert total_points == 20 * 1.6 + 5 * 1.6 + 30 * 0.5
+  test "Exercise" do
+    try do
+      Process.flag(:trap_exit, true)
+      small = 5
+      medium = 20
+      large = 30
+
+      total_points = small * 1.6 + medium * 1.6 + large * 0.5
+      assert total_points == 20 * 1.6 + 5 * 1.6 + 30 * 0.5
+    catch
+      error ->
+        flunk("""
+          Your solution threw the following error:
+
+          #{inspect(error)}
+        """)
+
+      :exit, {error, {GenServer, message_type, [_pid, message, _timeout]}} ->
+        flunk("""
+            GenServer crashed with the following error:
+
+            #{inspect(error)}
+
+            When it recieved: #{inspect(message)} #{message_type}
+
+            Likely you need to define the corresponding handler for #{inspect(message)}.
+
+            Ensure you defined a `handle_call/3`, `handle_info/2`, or `handle_cast/2` or appropriate handler function.
+
+              def handle_call(:message, _from, state) do
+                ...
+              end
+
+            Then ensure you call `GenServer.call/2`, `GenServer.cast/2`, or otherwise send the message correctly.
+
+              GenServer.call(pid, :message)
+        """)
+
+      :exit, error ->
+        flunk("""
+          Unhandled exit with the following error:
+
+          #{inspect(error)}
+        """)
+    after
+      # all warnings and errors are printed to the previous Kino Frame
+      # to avoid cluttering the test results display.
+      Process.sleep(10)
+      Kino.render(Kino.Markdown.new("### Test Results 
+<hr/>"))
+    end
   end
 end
 
@@ -232,7 +523,12 @@ ExUnit.run()
 
 # Make variables and modules defined in the test available.
 # Also allows for exploration using the output of the cell.
-total_points = nil
+# Unfortunately, this results in duplication of warnings.
+small = 5
+medium = 20
+large = 30
+
+total_points = small * 1.6 + medium * 1.6 + large * 0.5
 ```
 
 ### (BONUS): Add Your Own Feature
